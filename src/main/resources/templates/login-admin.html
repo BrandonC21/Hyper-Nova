@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="/estilos/login.css">
+</head>
+<body>
+    <header>
+        <h1>HYPERNOVA</h1>
+    </header>
+    <div class="login">
+        <h2>Bienvenido</h2>
+        <img alt="Logo Empresa" src="/img/richard-biros-pXFDctQsUys-unsplash.jpg">
+        <div id="mensaje-error" class="mensaje-error"></div>
+        <form id="formLogin" onsubmit="return validarForm();">
+            <div class="form-grid">
+            <div class="contenedor">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" required placeholder="ejemplo@gmail.com">
+            </div>
+            <div class="contenedor">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" required>
+            </div>
+            <div class="contenedor-btn">
+                <button type="submit" id="btn-ingresar" class="btn">Ingresar</button>
+            </div>
+            <div class="registro">
+                Quiero Registarme <a href="">Registrarme</a>
+            </div>
+            </div>
+        </form>
+    </div>
+<script src="/js/Login.js"></script>
+</body>
+</html>

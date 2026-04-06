@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registar Cliente</title>
+    <link rel="stylesheet" href="/estilos/registro-vehiculo.css">
+</head>
+<body>
+  <header>
+    <h1>HYPERNOVA</h1>
+    <div class="contenedor">
+      <button id="btnAbrir" class="btn">Acedder</button>
+      <div id="modal" class="modal">
+        <div class="modal-content">
+          <span id="closeModalBtn" class="close">&times;</span>
+          <h4>Ingresa tu RFC</h4>
+           <input type="text" id="rfcBuscar" required placeholder="ABCD010101XYZ" maxlength="13" >
+            <div class="button-group">
+            <button id="btnBuscar" class="btn">Buscar</button>
+            </div>
+        </div>
+      </div>
+    </div>
+  </header>
+<div class="form-container">
+  <h1>Registrar Cliente</h1>
+  <p>Si eres cliente nuevo llena todos los datos</p>
+  <form id="registarCliente">
+    <div class="form-group">
+      <label for ="nombre">Nombre(s)</label>
+      <input type="text" id="nombre" name="nombre" required>
+    </div>
+    <div class="form-group">
+      <label for ="apellidoPaterno">Apellido Paterno</label>
+      <input type="text" id="apellidoPaterno" name="apellidoPaterno" required>
+    </div>
+    <div class="form-group">
+      <label for ="apellidoMaterno">Apellido Materno</label>
+      <input type="text" id="apellidoMaterno" name="apellidoMaterno" required>
+    </div>
+    <div class="form-group">
+      <label for="numLicencia" >Numero de Licencia</label>
+      <input type="text" id="numLicencia" name="numLicencia" required maxlength="8">
+    </div>
+    <div class="form-group">
+      <label for="telefono">Telefono</label>
+      <input type="tel" id="telefono" name="telefono" required pattern="[0-9]{10}">
+    </div>
+    <div class="form-group">
+      <label for="email">Correo Electrónico</label>
+      <input type="email" id="email" name="email" required placeholder="ejemplo@gmail.com">
+    </div>
+    <div class="form-group">
+      <label for="RFC">RFC</label>
+      <input type="text" id="RFC" name="RFC" required pattern="[A-Za-z0-9Ñ&]{11,}" placeholder="ABCD010101XYZ" maxlength="13">
+    </div>
+    <div class="form-group">
+      <label for="calle">Calle</label>
+      <input type="text" id="calle" name="calle" required>
+    </div>
+    <div class="form-group">
+      <label for="colonia">Colonia</label>
+      <input type="text" id="colonia" name="colonia" required>
+    </div>
+    <div class="form-group">
+      <label for="codigoPostal">Codigo Postal</label>
+      <input type="number" id="codigoPostal" name="codigoPostal" required maxlength="5">
+    </div>
+    <div class="form-group">
+      <label for="delegacion">Delegacion</label>
+      <input type="text" id="delegacion" name="delegacion" required>
+    </div>
+    <div class="button-group">
+      <button type="submit" id="btn-registar" class="btn">Registar Usuario</button>
+    </div>
+  </form>
+</div>
+
+
+
+</body>
+</html>

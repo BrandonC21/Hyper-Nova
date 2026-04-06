@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Control - HYPERNOVA</title>
+  <link rel="stylesheet" href="/estilos/panelAdmin.css">
+</head>
+<body>
+
+<header class="header-nav">
+  <div class="logo">HYPERNOVA <span></span></div>
+  <nav>
+    <button id="btn-empleados" class="btn-nav active">Registrar Empleado</button>
+    <button id="btn-flota" class="btn-nav">Control de Flota</button>
+  </nav>
+  <div class="user-info">
+    <span>Admin Local</span>
+    <button id= "btn-salir" class="btn-salir">Cerrar Sesion</button>
+  </div>
+</header>
+
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span id="closeModalBtn" class="close">&times;</span>
+        <h2>Detalles del Vehículo</h2>
+        <p>Para finalizar el contrato completa los campos requeridos</p>
+        <form id="finalizarContratoForm">
+            <div class="form-group">
+                <label for="descripcion">¿Hubo anomalías?</label>
+                <select id="descripcion" name="descripcion">
+                    <option value="">--- Selecciona una opción ---</option>
+                    <option value="Daños">Daños</option>
+                    <option value="Atraso">Atraso</option>
+                    <option value="Sin Incidencias">Sin Incidencias</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="monto">Monto</label>
+                <input 
+                    type="number" 
+                    id="monto" 
+                    name="monto" 
+                    placeholder="No es necesario si no hay incidencias">
+            </div>
+            <div class="form-group">
+                <label for="descripcionDelAuto">Descripción del auto</label>
+                <input type="text" 
+                    id="descripcionDelAuto" 
+                    name="descripcionDelAuto" 
+                    placeholder="Describe las anomalías si existen">
+            </div>
+            <div class="form-group">
+                <button type="submit" id="btnFinalizar" class="btn btn-primary">
+                    Finalizar Contrato
+                </button>
+
+                <button type="button" id="btnEliminar" class="btn btn-primary">
+                    Eliminar Auto
+                </button>
+
+                <button type="button" id="btnReparar" class="btn btn-primary">
+                    Enviar a Reparación
+                </button>
+                <button type="button" id="btnDisponible" class="btn btn-primary">
+                    Marcar como Disponible
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<main class="main-container">
+
+  <section id="seccion-empleados" class="panel-card animate-fade">
+    <h1>Registrar Nuevo Empleado</h1>
+    <p>Complete la información para dar de alta a un empleado.</p>
+
+    <form id="RegistarEmp" class="form-grid">
+      <div class="form-group">
+        <label for="nombre">Nombre(s)</label>
+        <input type="text" id="nombre" name="nombre" required>
+      </div>
+      <div class="form-group">
+        <label for="apellidoP">Apellido Paterno</label>
+        <input type="text" id="apellidoP" name="apellidoP" required>
+      </div>
+      <div class="form-group">
+        <label for="apellidoM">Apellido Materno</label>
+        <input type="text" id="apellidoM" name="apellidoM" required>
+      </div>
+      <div class="form-group">
+        <label for="celular">Celular</label>
+        <input type="text" id="celular" name="celular" required placeholder="55-45-56-23-55" maxlength="14">
+      </div>
+      <div class="form-group">
+        <label for="email">Correo Electrónico</label>
+        <input type="email" id="email" name="email" required placeholder="ejemplo@gmail.com">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <div class="form-group">
+        <label>Rol en la Empresa</label>
+        <select id="rol" name="rol">
+          <option value="tipo">---Selecciona El Tipo---</option>
+          <option value="EMPLEADO">EMPLEADO</option>
+          <option value="RECEPCIONISTA">RECEPCIONISTA</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="calle">Calle</label>
+        <input type="text" id="calle" name="calle" required>
+      </div>
+      <div class="form-group">
+        <label for="colonia">Colonia</label>
+        <input type="text" id="colonia" name="colonia" required>
+      </div>
+      <div class="form-group">
+        <label for="codigoPostal">Codigo Postal</label>
+        <input type="number" id="codigoPostal" name="codigoPostal" required>
+      </div>
+      <div class="form-group">
+        <label for="delegacion">Delegacion</label>
+        <input type="text" id="delegacion" name="delegacion" required>
+      </div>
+      <div class="button-group full-width">
+        <button type="submit" class="btn btn-primary">Dar de Alta Empleado</button>
+      </div>
+    </form>
+  </section>
+
+  <section id="seccion-flota" class="panel-card animate-fade" style="display: none; max-width: 1000px;">
+    <div class="header-flota">
+      <div>
+        <h1>Estado de la Flota</h1>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="admin-table">
+        <thead>
+        <tr>
+          <th>ID Auto</th>
+          <th>Vehículo</th>
+          <th>Placas</th>
+          <th>Estado Actual</th>
+          <th>Fecha de Contrato</th>
+          <th>Acción</th>
+        </tr>
+        </thead>
+        <tbody id="tabla">
+        <tr>
+          <td>#1042</td>
+          <td><strong>Honda Civic</strong> • 2021</td>
+          <td>ABC-123-A</td>
+          <td><span class="badge badge-renta">En Renta</span></td>
+          <td><button class="btn-accion">Ver Detalles</button></td>
+        </tr>
+
+        <tr>
+          <td>#1088</td>
+          <td><strong>Toyota RAV4</strong> • 2023</td>
+          <td>XYZ-987-B</td>
+          <td><span class="badge badge-mantenimiento">Mantenimiento</span></td>
+          <td><button class="btn-accion">Ver Detalles</button></td>
+        </tr>
+
+        <tr>
+          <td>#1095</td>
+          <td><strong>Nissan Sentra</strong> • 2022</td>
+          <td>JKL-456-C</td>
+          <td><span class="badge badge-renta">En Renta</span></td>
+          <td><button class="btn-accion">Ver Detalles</button></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<script src="/js/PanelAdmin.js"></script>
+</body>
+</html>

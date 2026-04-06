@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservar Vehículo | Hyper-Nova</title>
+    <link rel="stylesheet" href="/estilos/contrato.css">
+</head>
+<body>
+
+    <header class="header-nav">
+        <div class="logo">Hyper-Nova</div>
+        <nav>
+            <button id="btnAbrirModal" class="btn-secundario">Acceder</button>
+            <a href="/catalogo.html">Volver al Catálogo</a>
+        </nav>
+    </header>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+          <span id="closeModalBtn" class="close">&times;</span>
+          <h4>Ingresa tu RFC</h4>
+           <input type="text" id="rfcBuscar" required placeholder="ABCD010101XYZ" maxlength="13" >
+            <div class="button-group">
+            <button id="btnBuscar" class="btn-secundario">Buscar</button>
+            </div>
+        </div>
+    </div>
+    
+
+    <main class="contenedor-formulario">
+        <div class="tarjeta-formulario">
+            <h1>Completa tu Reservación</h1>
+            <p class="subtitulo">Si eres cliente nuevo, llena tus datos. Si ya tienes cuenta, usa el botón Acceder de arriba.</p>
+
+            <form id="form-reserva">
+                
+                <fieldset>
+                    <legend>1. Tus Datos Personales</legend>
+                    <div class="grid-2-col">
+                        <div class="campo">
+                            <label for="nombre">Nombre(s):</label>
+                            <input type="text" id="nombre" name="nombre"required>
+                        </div>
+                        <div class="campo">
+                            <label for ="apellidoPaterno">Apellido Paterno:</label>
+                            <input type="text" id="apellidoPaterno" name="apellidoPaterno" required>
+                        </div>
+                        <div class="campo">
+                            <label for="apellidoMaterno">Apellido Materno:</label>
+                            <input type="text" id="apellidoMaterno" name="apellidoMaterno">
+                        </div>
+
+                        <div class="campo">
+                            <label for="numLicencia" >Numero de Licencia:</label>
+                             <input type="text" id="numLicencia" name="numLicencia" required maxlength="8">
+                        </div>
+                        <div class="campo">
+                           <label for="RFC">RFC:</label>
+                            <input type="text" id="RFC" name="RFC" required pattern="[A-Za-z0-9Ñ&]{11,}" placeholder="ABCD010101XYZ" maxlength="13">
+                        </div>
+                        <div class="campo">
+                            <label for="email">Correo Electrónico:</label>
+                            <input type="email" id="email" name="email" placeholder="correo@ejemplo.com" required>
+                        </div>
+                        <div class="campo">
+                            <label for="telefono">Teléfono:</label>
+                            <input type="tel" id="telefono" name="telefono" required pattern="[0-9]{10}">
+                        </div>
+                    </div>
+                    <h4>Dirección</h4>
+                    <div class="grid-2-col">
+                        <div class="campo">
+                            <label for="calle">Calle y Número:</label>
+                            <input type="text" id="calle" name="calle" required>
+                        </div>
+                        <div class="campo">
+                            <label for="colonia">Colonia:</label>
+                            <input type="text" id="colonia" name="colonia" required>
+                        </div>
+                        <div class="campo">
+                            <label for="delegacion">Delegación:</label>
+                            <input type="text" id="delegacion" name="delegacion" required>
+                        </div>
+                        <div class="campo">
+                            <label for="codigoPostal">Código Postal:</label>
+                            <input type="number" id="codigoPostal" name="codigoPostal" required maxlength="5">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>2. Vehículo Seleccionado</legend>
+                    <div class="grid-2-col">
+                        <div class="campo campo-completo">
+                            <label>Vehículo a rentar:</label>
+                            <input type="text" id="marca" value="Ford Mustang 2021 - Deportivo" readonly class="input-bloqueado">
+                            <input type="hidden" id="vehiculo" value="1">
+                        </div>
+                        
+                        <div class="campo">
+                            <label>Número de Placa:</label>
+                            <input type="text" id="placa" value="ABC-123-X" readonly class="input-bloqueado">
+                        </div>
+                        
+                        <div class="campo">
+                            <label>Costo por día:</label>
+                            <input type="text" id="costoDia" value="$ 1500.00" readonly class="input-bloqueado">
+                            <input type="hidden" id="costoDia" value="1500.00">
+                        </div>
+                        
+                        <div class="campo">
+                            <label>Depósito en Garantía:</label>
+                            <input type="text" id="depositoMostrar"readonly class="input-bloqueado" placeholder="El deposito es en proporcion a los dias
+                            ">
+                            <input type="hidden" id="deposito" value="5000.00">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>3. Fechas y Cobertura</legend>
+                    <div class="grid-2-col">
+                        <div class="campo">
+                            <label for="fechaInicio">Fecha de Recogida:</label>
+                            <input type="date" id="fechaInicio" name="fechaInicio" required>
+                        </div>
+                        <div class="campo">
+                            <label for="fechaFin">Fecha de Devolución:</label>
+                            <input type="date" id="fechaFin" name="fechaFin" required>
+                        </div>
+                        
+                        <div class="campo">
+                            <label for="seguro">Tipo de Seguro:</label>
+                            <select id="seguro" name="seguro" required>
+                                <option value="" data-precio="0">Seleccione cobertura...</option>
+                                <option value="COBERTURA_TERCEROS">Cobertura Terceros(+$129.35/día)</option>
+                                <option value="COBERTURA_AMPLIA">Cobertura Amplia (+$189.99/día)</option>
+                                <option value="COBERTURA_LIMITADA">Cobertura Limitada (+$249.65/día)</option>
+                                <option value="COBERTURA_PREMIUM">Cobertura Premium (+$385.65/día)</option>
+                            </select>
+                        </div>
+
+                        <div class="campo">
+                            <label>Compañía Aseguradora:</label>
+                            <select id="nombreAseguradora" name="nombreAseguradora" required>
+                                <option value="">Seleccione compañía...</option>
+                                <option value="AXA">AXA</option>
+                                <option value="GNP">GNP</option>
+                                <option value="Mapfre">Mapfre</option>
+                                <option value="Qualitas">Qualitas</option>
+                            </select>
+
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                   <legend>4. Metodo de pago</legend>
+                    <div class="grid-2-col">
+                    <div class="campo campo-completo">
+                        <label for="nombreBanco">Nombre del Banco:</label>
+                        <select id="nombreBanco" name="nombreBanco" required>
+                            <option value="">Seleccione banco...</option>
+                            <option value="BBVA">BBVA</option>
+                            <option value="Santander">Santander</option>
+                            <option value="Banorte">Banorte</option>
+                            <option value="HSBC">HSBC</option>
+                        </select>
+                    </div>
+
+                    <div class="campo campo-completo">
+                        <label for="numTarjeta">Numero de Tarjeta:</label>
+                        <input type="text" id="numTarjeta" name="numTarjeta" placeholder="XXXX XXXX XXXX XXXX" required maxlength="16">
+                    </div>
+                    
+                    <div class="campo">
+                        <label for="vigencia">Vigencia</label>
+                        <input type="text" id="vigencia" name="vigencia" required placeholder="MM/AA" maxlength="5">
+                    </div>
+                    <div class="campo">
+                        <label for="cvs">CVS</label>
+                        <input type="password" id="cvs" name="cvs" required placeholder="XXX" maxlength="3">
+                    </div>
+                    </div>
+
+                    
+                </fieldset>
+
+                <div class="seccion-total">
+                    <div>
+                        <p style="margin:0; color:#666; text-align:right;">Días totales: <span id="diasTotales">0</span></p>
+                        <h3>Total a Pagar:</h3>
+                    </div>
+                    <input type="text" id="costoFinal" name="costoFinal" readonly placeholder="$ 0.00">
+                </div>
+
+                <div class="acciones-form">
+                    <button type="button" class="btn-secundario" onclick="window.history.back()">Cancelar</button>
+                    <button type="submit" class="btn-primario">Confirmar Reservación</button>
+                </div>
+            </form>
+        </div>
+    </main>
+    <script src="/js/js.js"></script>
+</body>
+</html>

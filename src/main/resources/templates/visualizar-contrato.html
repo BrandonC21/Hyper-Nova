@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contrato de Renta | Hyper-Nova</title>
+    <link rel="stylesheet" href="/estilos/contrato.css">
+    <style>
+        /* Estilos específicos para la vista del contrato y su impresión */
+        .contenedor-recibo { max-width: 800px; margin: 40px auto; background: #fff; padding: 40px; border: 1px solid #ddd; box-shadow: 0 4px 10px rgba(0,0,0,0.1); font-family: Arial, sans-serif; }
+        .encabezado-recibo { text-align: center; border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 20px; }
+        .grid-info { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        .seccion-info { background: #f9f9f9; padding: 15px; border-radius: 5px; }
+        .totales { text-align: right; font-size: 1.2em; border-top: 2px solid #333; padding-top: 15px; margin-top: 20px; }
+        
+        /* Ocultar botones a la hora de guardar como PDF o Imprimir */
+        @media print {
+            .no-imprimir { display: none !important; }
+            .contenedor-recibo { box-shadow: none; border: none; margin: 0; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header-nav no-imprimir">
+        <div class="logo">Hyper-Nova</div>
+        <nav>
+            <a href="/catalogo.html">Volver al Catálogo</a>
+        </nav>
+    </header>
+
+    <main class="contenedor-recibo">
+        <div class="encabezado-recibo">
+            <h1>Contrato de Arrendamiento Vehicular</h1>
+            <p><strong>Folio del Contrato:</strong> <span id="folioContrato">Cargando...</span></p>
+            <p><strong>Fecha de Emisión:</strong> <span id="fechaEmision">Cargando...</span></p>
+        </div>
+
+        <div class="grid-info">
+            <div class="seccion-info">
+                <h3>Datos del Cliente</h3>
+                <p><strong>Nombre:</strong> <span id="cNombre"></span></p>
+                <p><strong>RFC:</strong> <span id="cRfc"></span></p>
+                <p><strong>Licencia:</strong> <span id="cLicencia"></span></p>
+                <p><strong>Teléfono:</strong> <span id="cTelefono"></span></p>
+            </div>
+            
+            <div class="seccion-info">
+                <h3>Datos del Vehículo</h3>
+                <p><strong>Vehículo:</strong> <span id="vMarcaModelo"></span></p>
+                <p><strong>Placa:</strong> <span id="vPlaca"></span></p>
+                <p><strong>Tipo de Seguro:</strong> <span id="vSeguro"></span> (<span id="vAseguradora"></span>)</p>
+            </div>
+        </div>
+
+        <div class="seccion-info">
+            <h3>Detalles de la Renta</h3>
+            <p><strong>Fecha Recogida:</strong> <span id="rInicio"></span></p>
+            <p><strong>Fecha Devolución:</strong> <span id="rFin"></span></p>
+            <p><strong>Días Totales:</strong> <span id="rDias"></span></p>
+            <p><strong>Método de Pago:</strong> <span id="rPago"></span></p>
+        </div>
+
+        <div class="totales">
+            <p><strong>Total Pagado (Inc. Depósito de $5,000.00):</strong></p>
+            <h2 style="color: #2c3e50; margin: 5px 0;">$<span id="totalFinal"></span> MXN</h2>
+        </div>
+
+        <div class="acciones-form no-imprimir" style="text-align: center; margin-top: 30px;">
+            <button class="btn-primario" onclick="window.print()">Guardar PDF / Imprimir Contrato</button>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Obtener el ID del contrato de la URL (ej. visualizar-contrato.html?id=5)
+            const parametrosURL = new URLSearchParams(window.location.search);
+            const idContrato = parametrosURL.get('id');
+
+            if (!idContrato) {
+                alert("No se encontró el número de contrato.");
+                return;
+            }
+
+            try {
+                // Hacemos GET a tu nuevo endpoint del controlador
+                const response = await fetch(`/api/contratos/${idContrato}`);
+                
+                if (response.ok) {
+                    const contrato = await response.json();
+                    
+                    // Llenamos la información en el HTML
+                    document.getElementById('folioContrato').textContent = "HN-" + contrato.id.toString().padStart(6, '0');
+                    document.getElementById('fechaEmision').textContent = new Date().toLocaleDateString();
+
+                    // Cliente (Asegúrate de que tus getters devuelven estos nombres)
+                    document.getElementById('cNombre').textContent = `${contrato.cliente.nombre} ${contrato.cliente.apellidoP} ${contrato.cliente.apellidoM || ''}`;
+                    document.getElementById('cRfc').textContent = contrato.cliente.rfc;
+                    document.getElementById('cLicencia').textContent = contrato.cliente.noLicencia;
+                    document.getElementById('cTelefono').textContent = contrato.cliente.celular;
+
+                    // Vehículo
+                    document.getElementById('vMarcaModelo').textContent = `${contrato.vehiculo.marca} ${contrato.vehiculo.modelo}`;
+                    document.getElementById('vPlaca').textContent = contrato.vehiculo.placa;
+                    
+                    // Renta
+                    document.getElementById('vSeguro').textContent = contrato.tipoSeguro.replace('_', ' ');
+                    document.getElementById('vAseguradora').textContent = contrato.aseguradora;
+                    document.getElementById('rInicio').textContent = contrato.fechaInicio;
+                    document.getElementById('rFin').textContent = contrato.fechaFin;
+                    document.getElementById('rDias').textContent = contrato.diasTotales;
+                    document.getElementById('rPago').textContent = "Tarjeta - " + contrato.metodoPago;
+                    document.getElementById('totalFinal').textContent = contrato.costoTotal.toLocaleString('es-MX', {minimumFractionDigits: 2});
+
+                } else {
+                    alert("No se pudo cargar el contrato.");
+                }
+            } catch (error) {
+                console.error("Error al obtener el contrato:", error);
+            }
+        });
+    </script>
+</body>
+</html>

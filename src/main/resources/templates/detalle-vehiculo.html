@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Detalle Vehículo</title>
+
+    <link rel="stylesheet" href="/estilos/detalle.css">
+</head>
+<body>
+<div class="contenedor">
+
+    <a href="#" id="accion-link" class="volver">← Volver al Catálogo</a>
+
+    <h1 id="detalle-titulo">Detalles de  vehículo...</h1>
+
+    <section class="visualizacion">
+        <img id="detalle-imagen" src="" alt="Foto del Vehículo" style="display: none;">
+        <p id="detalle-mensaje-img">Cargando imagen...</p>
+    </section>
+
+    <section class="detalle-vehiculo">
+        <h2>
+            Precio por dia aprox:
+            $<span id="detalle-precio">0.00</span>
+        </h2>
+
+        <h3>
+            Color: <span id="detalle-color">...</span>
+            |
+            Clasificacion: <span id="detalle-clasificacion">...</span>
+        </h3>
+        <h3>
+            Ocupantes:
+            <span id="detalle-ocupantes">...</span>
+            |
+            Transmicion:
+            <span id="detalle-transmicion">...</span>
+        </h3>
+    </section>
+
+    <section class="renta">
+        <h3>Proceso de Renta Del Vehículo</h3>
+        <p>Inicie el proceso para generar el contrato de renta correspondiente.</p>
+        <button id="realizarRenta" class="btn-realizar">Proceder a la Solicitud de renta</button>
+    </section>
+
+</div>
+<script src="/js/Detalle.js"></script>
+</body>
+</html>

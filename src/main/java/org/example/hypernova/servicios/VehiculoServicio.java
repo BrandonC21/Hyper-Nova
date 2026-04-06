@@ -1,0 +1,135 @@
+package org.example.hypernova.servicios;
+
+import org.example.hypernova.enmus.EstadoAuto;
+import org.example.hypernova.enmus.EstadoContrato;
+import org.example.hypernova.persistencia.entidades.Contrato;
+import org.example.hypernova.persistencia.entidades.Vehiculo;
+import org.example.hypernova.persistencia.repositorios.VehiculoRepo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class VehiculoServicio {
+    @Autowired
+    VehiculoRepo vehiculoRepo;
+
+    @Autowired
+    ContratoServicio contratoServicio;
+
+
+    //Agregar Vehiculo
+    public Vehiculo agregarVehiculo(Vehiculo vehiculo){
+        vehiculo.setEstado(EstadoAuto.DISPONIBLE);
+        return vehiculoRepo.save(vehiculo);
+    }
+
+    //Obtner un lista de los vehiculos
+    public List<Vehiculo> obtenerVehiculos(){
+        return vehiculoRepo.findAll();
+    }
+
+    //Obtner vehiculos sin rentar y sin mantenimiento
+    public List<Vehiculo> obtnerList(){
+        //Obtner todos los vehiculos
+        List<Vehiculo> vehiculos = obtenerVehiculos();
+        //Para los vehiculos que esten disponibles
+        List<Vehiculo> vehiculosDisponibles = new ArrayList<>();
+        for (Vehiculo vehiculo : vehiculos) {
+            if (vehiculo.getEstado() == EstadoAuto.RENTADO || vehiculo.getEstado() == EstadoAuto.MANTENIMIENTO) {
+            }else{
+                //Agregamos lops vehiculos disponibles a la lista
+                vehiculosDisponibles.add(vehiculo);
+            }
+        }
+        return vehiculosDisponibles;
+    }
+
+    //Actualizar un vehiculo si se encuentra en renta
+    public void marcarRentado(int idVehiculo){
+        try {
+            Vehiculo vehiculo = vehiculoRepo.findById(idVehiculo).get();
+            vehiculo.setEstado(EstadoAuto.RENTADO);
+            vehiculoRepo.save(vehiculo);
+        }catch (Exception e){
+            System.out.println("No existe el vehiculo con el id: "+idVehiculo);
+        }
+    }
+    //Actualizar un vehiculo si se encuentra en mantenimiento
+    public void marcarMantenimiento(int idVehiculo){
+        try {
+            Vehiculo vehiculo = vehiculoRepo.findById(idVehiculo).get();
+            vehiculo.setEstado(EstadoAuto.MANTENIMIENTO);
+            vehiculoRepo.save(vehiculo);
+        }catch (Exception e){
+            System.out.println("No existe el vehiculo con el id: "+idVehiculo);
+        }
+
+    }
+    //Marcar disponible cuando el vehiculo cuando acabe el contrato
+    public void marcarDisponible(int idVehiculo){
+        try {
+            Vehiculo vehiculo = vehiculoRepo.findById(idVehiculo).get();
+            vehiculo.setEstado(EstadoAuto.DISPONIBLE);
+            vehiculoRepo.save(vehiculo);
+        } catch (Exception e){
+            System.out.println("No existe el vehiculo con el id: "+idVehiculo);
+        }
+
+    }
+    public Vehiculo buscarVehiculo(String numSerie) {
+        Optional<Vehiculo> vehiculo = vehiculoRepo.findByNumSerie(numSerie);
+        if (vehiculo.isPresent()) {
+            return vehiculo.get();
+        } else  {
+            return null;
+        }
+    }
+    public Vehiculo buscarPorIdV(int idVehiculo) {
+        return vehiculoRepo.findById(idVehiculo).get();
+    }
+
+    public List<Contrato> busContrato(int idVehiculo){
+        return contratoServicio.obtenerContratosPorVehiculo(idVehiculo);
+    }
+
+    //Obtener fecha de inicio y fin
+    public String obtenerFecha(int idVehiculo) {
+        List<Contrato> contratos = busContrato(idVehiculo);
+        for (Contrato contrato : contratos) {
+            if (contrato.getEstadoContrato() == EstadoContrato.EN_CURSO) {
+                String fechaInicio = contrato.getFechaInicio().toString();
+                String fechaFin = contrato.getFechaFin().toString();
+                return fechaInicio + " a " + fechaFin;
+            }
+        }
+        return "No hay contratos en curso para este vehículo.";
+    }
+
+    //Elimiar vehiculo
+   public void borrarVehiculo(int idVehiculo) throws Exception {
+    Vehiculo vehiculo = buscarPorIdV(idVehiculo);
+    if (vehiculo != null) {
+        if (vehiculo.getEstado() == EstadoAuto.MANTENIMIENTO) {
+            throw new Exception("No se puede eliminar el vehículo porque está en estado de mantenimiento " + vehiculo.getEstado());
+        } else {
+           List<Contrato> contratos = busContrato(idVehiculo);
+           for (Contrato contrato : contratos) {
+                if (contrato.getEstadoContrato() == EstadoContrato.EN_CURSO) {
+                   throw new Exception("No se puede eliminar el vehículo porque tiene contratos en curso.");
+                }
+            }
+            //Eliminar los contratos asociados al vehículo
+            if(!contratos.isEmpty()){
+                contratoServicio.eliminarContratosPorVehiculo(idVehiculo);
+            }
+            vehiculoRepo.delete(vehiculo);
+        }
+    } else {
+        throw new Exception("Vehículo no encontrado");
+       }
+    }
+}

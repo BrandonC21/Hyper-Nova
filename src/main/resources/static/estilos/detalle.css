@@ -1,0 +1,92 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.contenedor {
+    background-color: white;
+    width: 100%;
+    max-width: 900px;
+    padding: 35px 40px;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+a.volver {
+    display: inline-block;
+    margin-bottom: 15px;
+    font-size: 0.9em;
+    color: #007bff;
+    text-decoration: none;
+}
+
+a.volver:hover {
+    text-decoration: underline;
+}
+
+h1 {
+    font-size: 2em;
+    margin-top: 0;
+    border-bottom: 3px solid #007bff;
+    padding-bottom: 10px;
+    color: #333;
+}
+
+.visualizacion {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.visualizacion img {
+    max-width: 100%;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+}
+
+.detalle-vehiculo {
+    background-color: #eef7ff;
+    padding: 20px;
+    border-left: 4px solid #007bff;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+.detalle-vehiculo h2,
+.detalle-vehiculo h3 {
+    margin: 8px 0;
+    color: #333;
+}
+
+.renta {
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #fafafa;
+    border: 1px solid #ddd;
+}
+
+.renta h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.btn-realizar {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 14px 22px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 8px;
+    font-size: 1.1em;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color .3s ease;
+}
+
+.btn-realizar:hover {
+    background-color: #0056b3;
+}

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Nuevo Vehículo</title>
+    <link rel="stylesheet" href="/estilos/registro-vehiculo.css">
+</head>
+<body>
+<header>
+    <h1>HYPERNOVA</h1>
+</header>
+<div class="form-container">
+    <h1>Registrar Vehiculo</h1>
+    <form id="registrarVehiculo">
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="marca">Marca:</label>
+                <input type="text" id="marca" name="marca" required>
+            </div>
+
+            <div class="form-group">
+                <label for="modelo">Modelo:</label>
+                <input type="text" id="modelo" name="modelo" required>
+            </div>
+
+            <div class="form-group">
+                <label for="clasificacion">Clasificacion:</label>
+                <select id="clasificacion" name="clasificacion" required>
+                    <option value="Selec">-- Selecciona --</option>
+                    <option value="SEDAN">SEDAN</option>
+                    <option value="HATCHBACK">HATCHBACK</option>
+                    <option value="SUV">SUV</option>
+                    <option value="COUPE">COUPE</option>
+                    <option value="PICKUP">PICKUP</option>
+                    <option value="COVERTIBLE">COVERTIBLE</option>
+                    <option value="DEPORTIVO">DEPORTIVO</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="transmicion">Transmicion:</label>
+                <select id="transmicion" name="transmicion" required>
+                    <option vale="Selec">-- Selecciona --</option>
+                    <option value="AUTOMATICO">AUTOMATICO</option>
+                    <option value="MANUAL">MANUAL</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="ocupantes">Ocupantes</label>
+                <select id="ocupantes" name="ocupantes" required>
+                    <option value="">-- Selecciona --</option>
+                    <option value="5">5 ocupantes</option>
+                    <option value="7">7 ocupantes</option>
+                    <option value="8">8 ocupantes</option>
+                    <option value="10">10 ocupantes</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="placa">Placa</label>
+                <input type="text" id="placa" name="placa" required maxlength="7">
+            </div>
+            <div class="form-group">
+                <label for="color">Color</label>
+                <input type="text" id="color" name="color" required>
+            </div>
+
+            <div class="form-group">
+                <label for="anio">Año de Fabricación</label>
+                <input type="number" id="anio" name="anio" required min="2000" max="2025">
+            </div>
+            <div class="form-group">
+                <label for="costoDia">Costo Dia</label>
+                <input type="number" id="costoDia" name="costoDia" required>
+            </div>
+            <div class="form-group">
+                <label for="numSerie">Ingrese el VIN</label>
+                <input type="text" id="numSerie" name="numSerie" maxlength="18" required>
+            </div>
+
+            <div class="form-group">
+                <label for="urlImagen">Seleccionar Imagen</label>
+                <input type="file" id="urlImagen" name="urlImagen" accept="image/*" required>
+            </div>
+
+        <div class="button-group">
+            <button id="btn-volver" class="btn">Volver</button>
+            <button type="submit" id="btn-registar" class="btn">Registrar Vehiculo</button>
+        </div>
+        </div>
+    </form>
+</div>
+<script src="/js/RegistrarVehiculo.js"></script>
+</body>
+</html>

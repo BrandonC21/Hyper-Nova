@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Vehículos</title>
+    <link rel="stylesheet" href="/estilos/catalogo.css">
+</head>
+<body>
+
+<header class="header-nav">
+    <div class="logo">HYPERNOVA
+    </div>
+    <div class="menu-derecho">
+        <nav>
+            <a href="/conoce-mas">Conoce mas</a>
+            <a href="#" id="accion-link">Aministrador</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <div class="titulo-seccion">
+        <h1>Catalogo de Vehículos</h1>
+    </div>
+
+    <div class="buscador-container">
+        <form action="/" method="get">
+            <label for="marca">Buscar por Marca o Categoria:</label>
+            <input type="text" id="marca" name="marca" placeholder="Ej. Toyota o Honda">
+            <button type="submit" class="btn-buscar">Buscar</button>
+        </form>
+    </div>
+
+    <div id="catalogo-grid" class="catalogo-grid">
+        
+
+    </div>
+</main>
+<script src="/js/Catalogo.js"></script>
+</body>
+</html>
