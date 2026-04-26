@@ -15,9 +15,15 @@ formVehiculo.addEventListener('submit', (evento) => {
 async function enviarVehiculo(evento) {
     const form = evento.target;
     const clas = document.getElementById('clasificacion').value;
+    const colorV = document.getElementById('color').value
     //Validamos que el empleado agregue la clasificacion
     if(clas === "Selec") {
         alert('Seleccione la clasificacion');
+        return;
+    }
+    //Validacion de que el usuario agrege el color del vehiculo
+    if(colorV === "Selec"){
+        alert('Debes Seleccionar Un Color')
         return;
     }
     //Validamos el numero de serie
@@ -33,7 +39,8 @@ async function enviarVehiculo(evento) {
         transmicion: document.getElementById('transmicion').value,
         ocupantes: parseInt(document.getElementById('ocupantes').value),
         placa: document.getElementById('placa').value,
-        color: document.getElementById('color').value,
+        //color: document.getElementById('color').value,
+        color:colorV,
         anio: document.getElementById('anio').value,
         costoDia: document.getElementById('costoDia').value,
         numSerie: numSerie

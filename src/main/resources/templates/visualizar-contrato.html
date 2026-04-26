@@ -6,14 +6,11 @@
     <title>Contrato de Renta | Hyper-Nova</title>
     <link rel="stylesheet" href="/estilos/contrato.css">
     <style>
-        /* Estilos específicos para la vista del contrato y su impresión */
         .contenedor-recibo { max-width: 800px; margin: 40px auto; background: #fff; padding: 40px; border: 1px solid #ddd; box-shadow: 0 4px 10px rgba(0,0,0,0.1); font-family: Arial, sans-serif; }
         .encabezado-recibo { text-align: center; border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 20px; }
         .grid-info { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
         .seccion-info { background: #f9f9f9; padding: 15px; border-radius: 5px; }
         .totales { text-align: right; font-size: 1.2em; border-top: 2px solid #333; padding-top: 15px; margin-top: 20px; }
-        
-        /* Ocultar botones a la hora de guardar como PDF o Imprimir */
         @media print {
             .no-imprimir { display: none !important; }
             .contenedor-recibo { box-shadow: none; border: none; margin: 0; padding: 0; }
@@ -70,54 +67,6 @@
         </div>
     </main>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            // Obtener el ID del contrato de la URL (ej. visualizar-contrato.html?id=5)
-            const parametrosURL = new URLSearchParams(window.location.search);
-            const idContrato = parametrosURL.get('id');
-
-            if (!idContrato) {
-                alert("No se encontró el número de contrato.");
-                return;
-            }
-
-            try {
-                // Hacemos GET a tu nuevo endpoint del controlador
-                const response = await fetch(`/api/contratos/${idContrato}`);
-                
-                if (response.ok) {
-                    const contrato = await response.json();
-                    
-                    // Llenamos la información en el HTML
-                    document.getElementById('folioContrato').textContent = "HN-" + contrato.id.toString().padStart(6, '0');
-                    document.getElementById('fechaEmision').textContent = new Date().toLocaleDateString();
-
-                    // Cliente (Asegúrate de que tus getters devuelven estos nombres)
-                    document.getElementById('cNombre').textContent = `${contrato.cliente.nombre} ${contrato.cliente.apellidoP} ${contrato.cliente.apellidoM || ''}`;
-                    document.getElementById('cRfc').textContent = contrato.cliente.rfc;
-                    document.getElementById('cLicencia').textContent = contrato.cliente.noLicencia;
-                    document.getElementById('cTelefono').textContent = contrato.cliente.celular;
-
-                    // Vehículo
-                    document.getElementById('vMarcaModelo').textContent = `${contrato.vehiculo.marca} ${contrato.vehiculo.modelo}`;
-                    document.getElementById('vPlaca').textContent = contrato.vehiculo.placa;
-                    
-                    // Renta
-                    document.getElementById('vSeguro').textContent = contrato.tipoSeguro.replace('_', ' ');
-                    document.getElementById('vAseguradora').textContent = contrato.aseguradora;
-                    document.getElementById('rInicio').textContent = contrato.fechaInicio;
-                    document.getElementById('rFin').textContent = contrato.fechaFin;
-                    document.getElementById('rDias').textContent = contrato.diasTotales;
-                    document.getElementById('rPago').textContent = "Tarjeta - " + contrato.metodoPago;
-                    document.getElementById('totalFinal').textContent = contrato.costoTotal.toLocaleString('es-MX', {minimumFractionDigits: 2});
-
-                } else {
-                    alert("No se pudo cargar el contrato.");
-                }
-            } catch (error) {
-                console.error("Error al obtener el contrato:", error);
-            }
-        });
-    </script>
+    <script src="/js/visualizar-contrato"></script>
 </body>
 </html>
