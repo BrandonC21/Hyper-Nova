@@ -1,6 +1,6 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #cccccc;
+    background-color: #1A1E26;
     margin: 0;
     padding: 20px;
     display: flex;
@@ -9,13 +9,14 @@ body {
     min-height: 100vh;
 }
 
+
 header {
     width: 100%;
     margin-bottom: 40px;
 }
 h1 {
-    color: #333;
-    border-bottom: 2px solid #007bff;
+    color:#7790A6;
+    border-bottom: 2px solid #092DB6;
     padding-bottom: 10px;
     margin-top: 0;
     margin-bottom: 20px;
@@ -29,7 +30,7 @@ h1 {
     display: none;
 }
 h2{
-    color: #333;
+    color: #7790A6;
     font-size: 1.8em;
     text-align: center;
 }
@@ -42,12 +43,13 @@ img{
     align-items: center;
 }
 .login{
-    background-color: white;
+    background-color: #1A2E40;
     padding: 30px 40px;
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 500px;
+    width: 900px;
+    height: 800px;
+    /*max-width: 500px;*/
     box-sizing: border-box;
 }
 .form-grid {
@@ -55,18 +57,21 @@ img{
     gap: 15px;
     justify-items: center;
     align-items: center;
+   
 }
 .contenedor{
     display: flex;
     flex-direction: column;
     width: 100%;
+    
 }
 label {
     margin-bottom: 5px;
     font-weight: 600;
-    color: #555;
+    color: #7790A6;
     font-size: 0.95em;
 }
+
 
 input[type="email"],
 input[type="password"]{
@@ -118,12 +123,12 @@ input:disabled{
 
 }
 #btn-ingresar {
-    background-color: #007bff;
-    color: white;
+    background-color: #06121f;
+    color: #7790A6;
 }
 
 #btn-ingresar:hover {
-    background-color: #0056b3;
+    background-color: #0c3158;
 }
 
 
