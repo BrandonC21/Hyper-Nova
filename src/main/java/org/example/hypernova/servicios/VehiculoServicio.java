@@ -132,4 +132,18 @@ public class VehiculoServicio {
         throw new Exception("Vehículo no encontrado");
        }
     }
+
+    //Buscar vehiculos por marca o modelo
+    public List<Vehiculo> buscarVehiculos(String nombre){
+        List<Vehiculo> vehiculosEncontrados = new ArrayList<>();
+        List<Vehiculo> vehiculos = obtenerVehiculos();
+        for(Vehiculo vehiculo: vehiculos){
+            //Ignoramos mayusculas y minusculas 
+            if(vehiculo.getMarca().equalsIgnoreCase(nombre) || vehiculo.getModelo().equalsIgnoreCase(nombre)){
+                vehiculosEncontrados.add(vehiculo);
+            }
+        } 
+        return vehiculosEncontrados;
+    }
+
 }

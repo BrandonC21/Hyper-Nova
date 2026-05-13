@@ -19,6 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/vehiculos")
@@ -37,6 +38,18 @@ public class ControllerVehiculo {
     @GetMapping("/disponibles")
     public ResponseEntity<List<Vehiculo>> obtenerVehiculosDisponibles(){
         return ResponseEntity.ok(vehiculoServicio.obtnerList());
+    }
+
+    //Buscar vehiculos por marca o medelo
+   @GetMapping("/buscar/{nombre}")
+    public ResponseEntity<List<Vehiculo>> busquedaVehiculos(@PathVariable String nombre){
+        //return ResponseEntity.ok(vehiculoServicio.buscarVehiculos(nombre));
+        List <Vehiculo> vehiculos = vehiculoServicio.buscarVehiculos(nombre);
+        if(vehiculos != null && !vehiculos.isEmpty()){
+            return ResponseEntity.ok(vehiculos);
+        }else{
+            return ResponseEntity.notFound().build();
+        }
     }
 
     //Registar Vehiculo

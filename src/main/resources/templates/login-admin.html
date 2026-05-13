@@ -3,17 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-<!--    <link rel="stylesheet" href="/estilos/login.css">-->
-<link rel="stylesheet" href="/src/main/resources/static/estilos/login.css">
+<link rel="stylesheet" href="/estilos/login.css">
+<!--<link rel="stylesheet" href="/src/main/resources/static/estilos/login.css">-->
 </head>
 <body>
-    <header>
-        <h1>HYPERNOVA</h1>
+    <header class="header-nav">
+      <div class="logo">HYPERNOVA
+    </div>
+        <div class="menu-derecho">
+            <nav>
+                <a href="#" id="accion-volver">Volver</a>
+            </nav>
+        </div>
     </header>
     <div class="login">
-        <h2>Bienvenido</h2>
-    <!-- <img alt="Logo Empresa" src="/img/richard-biros-pXFDctQsUys-unsplash.jpg"> -->  
-    <img src="/src/main/resources/static/img/richard-biros-pXFDctQsUys-unsplash.jpg" alt="Logo de empresa">
+    
+<div class="contenedor1">
+<!--<img src="/src/main/resources/static/img/logo.png" alt="Imagen de empresa">-->
+<img src="/img/logo.png" alt="logo de empresa">
+</div>
+    <div class="contenedor2">
+      <h2>Bienvenido</h2>
+    <img alt="Logo Empresa" src="/img/richard-biros-pXFDctQsUys-unsplash.jpg">
+    <!--<img src="/src/main/resources/static/img/richard-biros-pXFDctQsUys-unsplash.jpg" alt="Logo de empresa">-->
         <div id="mensaje-error" class="mensaje-error"></div>
         <form id="formLogin" onsubmit="return validarForm();">
             <div class="form-grid">
@@ -33,6 +45,7 @@
             </div>
             </div>
         </form>
+      </div>
     </div>
 <script src="/js/Login.js"></script>
 </body>

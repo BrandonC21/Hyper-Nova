@@ -1,4 +1,17 @@
 const API_LOGIN_RUL = '/api/empleados/login';
+const catalogo ='catalogo';
+const enlace = document.getElementById('accion-volver');
+
+document.addEventListener('DOMContentLoaded', () => {
+ if(enlace){
+    enlace.addEventListener('click', () =>{
+    window.location.href = catalogo;
+   });
+ }else{
+    console.log("No se encuentra el index");
+ }
+
+});
 
 //Validamos el usuario
 function validarForm() {

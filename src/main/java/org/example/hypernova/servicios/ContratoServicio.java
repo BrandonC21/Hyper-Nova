@@ -11,6 +11,7 @@ import org.example.hypernova.persistencia.repositorios.ContratoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -195,6 +196,11 @@ public class ContratoServicio {
     List<Contrato> contratos = contratoRepo.findByVehiculo_IdVehiculo(idVehiculo);
     contratoRepo.deleteAll(contratos);
 }
+
+    //Public obtner contratos por fecha de inicio y fecha de fin
+    public List<Contrato> obtenerContratosPorFechas(LocalDate fechaInicio, LocalDate fechaFin) {
+        return contratoRepo.findByFechaInicioGreaterThanEqualAndFechaFinLessThanEqual(fechaInicio, fechaFin);
+    }
     
 
 }

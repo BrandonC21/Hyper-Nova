@@ -1,9 +1,9 @@
 // Endpoints
 const API_CLIENTE = '/api/clientes';
 const API_VEHICULO = '/api/vehiculos';
-const API_CONTRATO = '/api/contratos'; // Necesitarás este controlador en tu backend
-const visualizar = 'visualizar-contrato.html'; // Página para mostrar el contrato generado
-let idVehiculoGlobal = null; // Guardamos el ID del vehículo a nivel global
+const API_CONTRATO = '/api/contratos'; 
+const visualizar = 'visualizar-contrato.html'; //Visualizar el constrato
+let idVehiculoGlobal = null; // Guardamos el ID del vehiculo
 
 document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('modal');
@@ -21,11 +21,11 @@ document.addEventListener('DOMContentLoaded', () => {
         alert("No se especificó un vehículo. Regresa al catálogo y selecciona uno.");
     }
 
-    // --- EVENTOS DEL MODAL ---
+  
     if (openModal) openModal.addEventListener('click', () => modal.style.display = 'flex');
     if (closeModal) closeModal.addEventListener('click', () => modal.style.display = 'none');
 
-    // --- EVENTO DE BÚSQUEDA ---
+    
     if (btnBuscar) {
         btnBuscar.addEventListener('click', function (){
            const rfcCliente = document.getElementById('rfcBuscar').value;
@@ -37,14 +37,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- EVENTOS PARA CALCULAR TOTALES DINÁMICAMENTE ---
+    
     const inputsCalculo = ['fechaInicio', 'fechaFin', 'seguro'];
     inputsCalculo.forEach(id => {
         const elemento = document.getElementById(id);
         if(elemento) elemento.addEventListener('change', calcularTotales);
     });
 
-    // --- EVENTO PRINCIPAL: CONFIRMAR RESERVACIÓN ---
+    
     if (formReserva) {
         formReserva.addEventListener('submit', (evento) => {
             evento.preventDefault();
@@ -63,8 +63,7 @@ async function buscarPorRFC(rfcCliente) {
         const response = await fetch(`${API_CLIENTE}/${rfcCliente}`);
         if (response.ok) {
             const cliente = await response.json();
-            // ¡AGREGA ESTA LÍNEA!
-            console.log("Datos del cliente desde Java:", cliente);
+            console.log("Datos del cliente:", cliente);
             llenarFormularioCliente(cliente);
             document.getElementById('modal').style.display = 'none';          
         } else if (response.status === 404) {

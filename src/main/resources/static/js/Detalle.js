@@ -13,16 +13,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     if (idVehiculo) {
-        // Si hay un ID, vamos a buscar sus datos
         cargarDetallesVehiculo(idVehiculo);
     } else {
-        // Si alguien entra a la página sin ID, le avisamos
         document.getElementById('detalle-titulo').textContent = 'Error: Vehículo no especificado';
         document.getElementById('detalle-mensaje-img').textContent = 'Por favor, regresa al catálogo y selecciona un vehículo.';
     }
 });
 
-// Función para ir al backend (Java) a traer los datos
 async function cargarDetallesVehiculo(id) {
     try {
         const response = await fetch(API_VEHICULO_DETALLE + id);
@@ -40,7 +37,6 @@ async function cargarDetallesVehiculo(id) {
     }
 }
 
-// Función para inyectar los datos en tu HTML
 function mostrarDetalles(vehiculo) {
     // 1. Llenamos el texto (usamos textContent para mayor seguridad)
     document.getElementById('detalle-titulo').textContent = `${vehiculo.marca} ${vehiculo.modelo}`;

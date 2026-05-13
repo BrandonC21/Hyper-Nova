@@ -1,15 +1,29 @@
-const API_VEHICULO = '/api/vehiculos/disponibles'; // Endpoint para obtener vehículos disponibles
-const login = '/login';
+const API_VEHICULO = '/api/vehiculos/disponibles'; 
 const miEnlace = document.getElementById('accion-link')
+const API_BUSQUEDA = '/api/vehiculos/buscar'; 
+const login = '/login';
+const btnBuscar = document.getElementById('btn-buscar');
+
+
+    
 document.addEventListener('DOMContentLoaded', () => {
     cargarCatalogo();
     if (miEnlace) {
         miEnlace.addEventListener('click', () => {
             window.location.href = login;
         });
-    }else{
-        console.log('No se encuentra encuentra el index');
     }
+    if(btnBuscar){
+        btnBuscar.addEventListener('click', () => {
+            const input = document.getElementById('marca').value;
+        if(input.trim() !== ''){
+            busqueda(input);
+        }else{
+            alert("Debes ingresar el Modelo o Marca");
+        }
+      })
+    }
+
 });
 
 async function cargarCatalogo() {
@@ -26,6 +40,36 @@ async function cargarCatalogo() {
     }catch (error) {
         console.log("Error al traer los vehiculos",error);
     }
+}
+
+//Funcion para buscar por modelo o marca
+async function busqueda(nombre){
+    try{
+        const responce = await fetch(`${API_BUSQUEDA}/${nombre}`);
+        if(responce.ok){
+          //Convertir la respuesta en json
+          const vehiclos = await responce.json();
+          console.log("Vehiculos encontrados"+vehiclos);
+          imprimirVehiculo(vehiclos);  
+        }
+        else if(responce.status === 404){
+            mostrarMensaje();
+        }
+    }catch{
+        console.log("Error de conexio");
+    }
+}
+
+function mostrarMensaje(){
+    const contenedor = document.getElementById('catalogo-grid');
+   contenedor.innerHTML = '';
+   const tarjeta = `
+   <div class="mensaje">
+        <h2>El vehiculo ingresado no existe</h2>    
+    </div>
+    `;
+    contenedor.innerHTML = tarjeta;     
+    
 }
 
 function imprimirVehiculo(vehiculos) {
