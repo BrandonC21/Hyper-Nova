@@ -58,6 +58,18 @@ public class VehiculoServicio {
             System.out.println("No existe el vehiculo con el id: "+idVehiculo);
         }
     }
+
+    //Actualizar un vehiculo si se encuentra en apartado
+    public void marcarApartado(int idVehiculo){
+        try {
+            Vehiculo vehiculo = vehiculoRepo.findById(idVehiculo).get();
+            vehiculo.setEstado(EstadoAuto.APARTADO);
+            vehiculoRepo.save(vehiculo);
+        }catch (Exception e){
+            System.out.println("No existe el vehiculo con el id: "+idVehiculo);
+        }
+    }
+
     //Actualizar un vehiculo si se encuentra en mantenimiento
     public void marcarMantenimiento(int idVehiculo){
         try {

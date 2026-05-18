@@ -50,8 +50,8 @@ public class ControllerVehiculo {
         }else{
             return ResponseEntity.notFound().build();
         }
+     
     }
-
     //Registar Vehiculo
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> registrarVehiculo(

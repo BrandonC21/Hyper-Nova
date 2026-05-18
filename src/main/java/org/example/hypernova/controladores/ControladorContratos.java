@@ -1,7 +1,11 @@
 package org.example.hypernova.controladores;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import org.example.hypernova.dto.FinalizarContrato;
 import org.example.hypernova.persistencia.entidades.Contrato;
+import org.example.hypernova.persistencia.entidades.Vehiculo;
 import org.example.hypernova.servicios.ContratoServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +24,7 @@ public class ControladorContratos {
     @Autowired
     private ContratoServicio contratoServicio;
 
-    //Registar contrato
+    //agregar contrato
     @PostMapping
     public ResponseEntity<Contrato> crearContrato(@RequestBody Contrato contrato){
         try {
@@ -61,7 +65,16 @@ public class ControladorContratos {
              return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
-
+    //Obetener los vehiculos disponibles por fecha de inicio y fecha de fin
+    @GetMapping("/disponibles/{fechaInicio}/{fechaFin}")
+    public ResponseEntity<?> obtenerVehiculosDisponiblesPorFechas(@PathVariable LocalDate fechaInicio, @PathVariable LocalDate fechaFin) {
+        try {
+            List<Vehiculo> vehiculosDisponibles = contratoServicio.obtenerVehiculosDisponiblesPorFechas(fechaInicio, fechaFin);
+            return ResponseEntity.ok(vehiculosDisponibles);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
     @PutMapping("/{id}/finalizar")
     public ResponseEntity<?> finalizarContrato(@PathVariable int id, @RequestBody FinalizarContrato contrato) {
         try {

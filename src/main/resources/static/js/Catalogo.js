@@ -3,6 +3,8 @@ const miEnlace = document.getElementById('accion-link')
 const API_BUSQUEDA = '/api/vehiculos/buscar'; 
 const login = '/login';
 const btnBuscar = document.getElementById('btn-buscar');
+const filtrarFechas = '/api/contratos/disponibles'
+const btnBuscarFecha = document.getElementById('btn-buscar-fechas');
 
 
     
@@ -13,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = login;
         });
     }
+    //Busqueda por marca o modelo
     if(btnBuscar){
         btnBuscar.addEventListener('click', () => {
             const input = document.getElementById('marca').value;
@@ -22,6 +25,18 @@ document.addEventListener('DOMContentLoaded', () => {
             alert("Debes ingresar el Modelo o Marca");
         }
       })
+    }
+    //Busqueda por fecha de inicio y fecha de fin
+    if(btnBuscarFecha){
+        btnBuscarFecha.addEventListener('click', () =>{
+            const fechaInicio = document.getElementById('fecha-inicio').value;
+            const fechaFin = document.getElementById('fecha-fin').value;
+            if(fechaInicio.trim() !== '' && fechaFin.trim() !== ''){
+                filtrarPorFechas(fechaInicio, fechaFin);
+            }else{
+                alert("Debes ingresar ambas fechas");
+            }
+        })
     }
 
 });
@@ -53,13 +68,30 @@ async function busqueda(nombre){
           imprimirVehiculo(vehiclos);  
         }
         else if(responce.status === 404){
-            mostrarMensaje();
+            mostrarMensaje2();
+        }else{
+            console.log("Error en la busqueda");
         }
-    }catch{
-        console.log("Error de conexio");
+    }catch(error){
+        console.log("Error de conexio", error);
     }
 }
-
+//Filtrar por fecha de inicio y fecha de fin
+async function filtrarPorFechas(fechaInicio, fechaFin){
+    try {
+        const responce = await fetch(`${filtrarFechas}/${fechaInicio}/${fechaFin}`);
+        if(responce.ok){
+            //Convertir la respuesta en json
+            const vehiculos = await responce.json();
+            console.log("Vehiculos encontrados"+vehiculos);
+            imprimirVehiculo(vehiculos);
+        }else if(responce.status === 404){
+            mostrarMensaje2();
+        }
+    } catch (error) {
+        console.log("Error de conexio", error);
+    }
+}
 function mostrarMensaje(){
     const contenedor = document.getElementById('catalogo-grid');
    contenedor.innerHTML = '';
@@ -71,6 +103,17 @@ function mostrarMensaje(){
     contenedor.innerHTML = tarjeta;     
     
 }
+function mostrarMensaje2(){
+    const contenedor = document.getElementById('catalogo-grid');
+   contenedor.innerHTML = '';
+   const tarjeta = `
+   <div class="mensaje">
+        <h2>Las Fechas ingresadas no tienen vehiculos disponibles</h2>    
+    </div>
+    `;
+    contenedor.innerHTML = tarjeta;     
+}
+
 
 function imprimirVehiculo(vehiculos) {
     const contenedor = document.getElementById('catalogo-grid');

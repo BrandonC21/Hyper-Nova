@@ -6,5 +6,6 @@ import java.util.Optional;
 
 public interface ClienteRepo extends JpaRepository<Cliente, Integer> {
   //Buscar Cliente por RFC
-    Optional<Cliente> findByrfc(String rfc);
+  Optional<Cliente> findByRfc(String rfc);
+
 }

@@ -22,7 +22,7 @@ public class controladorClientes {
     }
     //Buscar cliente por medio de rfc ya que es unico
     @GetMapping("/{rfc}")
-    public ResponseEntity<Cliente> buscarcliente(@PathVariable String rfc){
+    public ResponseEntity<Cliente> buscarcliente(@PathVariable String rfc) {
         Cliente cliente = clienteServicio.buscarporRFC(rfc);
         if( cliente != null) {
             return ResponseEntity.ok(cliente);

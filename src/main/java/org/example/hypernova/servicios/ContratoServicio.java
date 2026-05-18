@@ -35,13 +35,12 @@ public class ContratoServicio {
     @Autowired
     private ClienteServicio clienteServicio;
 
-    // Crear el contrato e iniciarlo (EN CURSO)
+    // Crear el contrato e iniciarlo (Reservado)
     public Contrato crearContrato(Contrato contrato){
         try{
-            //Primer guadrar el estado del contrato
-            contrato.setEstadoContrato(EstadoContrato.EN_CURSO);
+            //Guardar el estado del contrato como reservado
+            contrato.setEstadoContrato(EstadoContrato.RESERVADO);
             //Vicular 
-            
             //Guardar los datos de seguro
             if (contrato.getSeguro() != null) {
                 Seguro seguroGuardado = seguroServicio.agregarSeguro(contrato.getSeguro());
@@ -68,11 +67,12 @@ public class ContratoServicio {
             contrato.setDeposito(calcularDeposito(vehiculo, diasRenta));
             contrato.setCostoDia(vehiculo.getCostoDia());
 
-            //Vicular el id del empleado quien registro el vehiculo para el contrato
-             //contrato.setEmpleado();
+            //Vincular el id del empleado que regikstro el automovi
+            contrato.setEmpleado(vehiculo.getEmpleado()); 
             
-            // Marcar el vehículo como RENTADO
-            vehiculoServicio.marcarRentado(vehiculo.getIdVehiculo());
+            // Marcar el vehiculo como apartado, hasta que se entrege el vehiculo se marcara como rentado 
+            //vehiculoServicio.marcarRentado(vehiculo.getIdVehiculo());
+            vehiculoServicio.marcarApartado(vehiculo.getIdVehiculo());
             return contratoRepo.save(contrato);
         }catch(Exception e){
             throw new RuntimeException("Error creando contrato: " + e.getMessage());
@@ -155,21 +155,25 @@ public class ContratoServicio {
             return null;
         }
     }
-
-    // 3. Cancelar un contrato (En caso de errores o arrepentimiento del cliente)
-    public Contrato cancelarContrato(int idContrato) {
+        
+    // Cancelar un contrato en caso de que el cliente ya no requiera el servicio
+    public Contrato cancelarContrato(int idContrato) throws Exception {
         try {
-            return contratoRepo.findById(idContrato).map(contrato -> {
+            // Buscar el contrato por su ID
+            List<Contrato> contratos = contratoRepo.findByIdContrato(idContrato);
+            
+            if (!contratos.isEmpty()) {
+                Contrato contrato = contratos.get(0);
                 contrato.setEstadoContrato(EstadoContrato.CANCELADO);
-                // Liberar vehículo sin cobrar
                 if (contrato.getVehiculo() != null) {
                     vehiculoServicio.marcarDisponible(contrato.getVehiculo().getIdVehiculo());
                 }
                 return contratoRepo.save(contrato);
-            }).orElse(null);
+            } else {
+                throw new Exception("No se encontró el contrato con ID: " + idContrato);
+            }
         } catch (Exception e) {
-            System.err.println("Error al cancelar el contrato: " + e.getMessage());
-            return null;
+            throw new Exception("Error al cancelar el contrato: " + e.getMessage());
         }
     }
 
@@ -182,14 +186,14 @@ public class ContratoServicio {
     }
 
     //Obtner el id del contrato para poder finalizrlo
-    public int mostrarIdContrato(int idVehiculo) {
+    public int mostrarIdContrato(int idVehiculo) throws Exception {
         List<Contrato> contratos = obtenerContratosPorVehiculo(idVehiculo);
         for (Contrato contrato : contratos) {
             if (contrato.getEstadoContrato() == EstadoContrato.EN_CURSO) {
                 return contrato.getIdContrato();
             }
         }
-        return -1;
+        throw new Exception("No se encontro un contrato en curso para el vehiculo con ID: " + idVehiculo);
     }
 
     public void eliminarContratosPorVehiculo(int idVehiculo) {
@@ -201,6 +205,20 @@ public class ContratoServicio {
     public List<Contrato> obtenerContratosPorFechas(LocalDate fechaInicio, LocalDate fechaFin) {
         return contratoRepo.findByFechaInicioGreaterThanEqualAndFechaFinLessThanEqual(fechaInicio, fechaFin);
     }
-    
+
+    //Aprartir del contato obtner los autos disponibles por fecha de inicio y fecha de fin
+    public List<Vehiculo> obtenerVehiculosDisponiblesPorFechas(LocalDate fechaInicio, LocalDate fechaFin){
+        //Obtner todos los vehiculos
+        List<Vehiculo> vehiculos  = vehiculoServicio.obtenerVehiculos();
+        List<Contrato> contratos = obtenerContratosPorFechas(fechaInicio, fechaFin);
+        List<Vehiculo> vehiculosOcupados = new ArrayList<>();
+        for (Contrato contrato : contratos){
+            if(contrato.getVehiculo() != null){
+                vehiculosOcupados.add(contrato.getVehiculo());
+            }
+        }
+        vehiculos.removeAll(vehiculosOcupados);
+        return vehiculos;
+    }
 
 }

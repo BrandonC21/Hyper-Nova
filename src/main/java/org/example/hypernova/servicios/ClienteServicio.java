@@ -14,28 +14,32 @@ public class ClienteServicio {
 
     @Autowired
     private ClienteRepo clienteRepo;
-
-    // INYECTAMOS el repositorio de la dirección para poder guardar los cambios allí también
     @Autowired
     private DireccionRepo direccionRepo;
 
     //  Agregar Cliente
     public Cliente agregarCliente(Cliente cliente) {
+        /* 
         try {
-            // Si el cliente trae una dirección nueva, primero debemos guardarla en su tabla
             if (cliente.getDireccion() != null) {
                 Direccion dirGuardada = direccionRepo.save(cliente.getDireccion());
                 cliente.setDireccion(dirGuardada);
             }
             return clienteRepo.save(cliente);
         } catch (Exception e) {
-            System.out.println("Error al agregar cliente: " + e.getMessage());
             return null;
         }
+        */
+       if(cliente.getDireccion() != null){
+            Direccion dirGuardada = direccionRepo.save(cliente.getDireccion());
+            cliente.setDireccion(dirGuardada);
+        }
+        return clienteRepo.save(cliente);
+       
     }
     //Buscar cliente por rfc
     public Cliente buscarporRFC(String rfc) {
-       return clienteRepo.findByrfc(rfc).orElse(null);
+       return clienteRepo.findByRfc(rfc).orElse(null);
     }
 
     //Buscar por id
@@ -43,40 +47,32 @@ public class ClienteServicio {
         return clienteRepo.findById(idCliente).get();
     }
 
-    // Si el cliente fue registrado, solo actualizar los campos necesarios
+    //Actualizar cliente registrado
     public Cliente actualizarClienteRegistrado(Cliente clienteNuevosDatos) {
         try {
             String rfc = clienteNuevosDatos.getRfc();
-            Optional<Cliente> clienteOpt = clienteRepo.findByrfc(rfc);
+            Optional<Cliente> clienteOpt = clienteRepo.findByRfc(rfc);
 
             if (clienteOpt.isPresent()) {
                 Cliente existente = clienteOpt.get();
 
-                // Actualizar campos propios del cliente
+                // Actualiza los campos de clientes que pueden ser mofificados
                 existente.setEmail(clienteNuevosDatos.getEmail());
                 existente.setCelular(clienteNuevosDatos.getCelular());
 
-                // --- ACTUALIZAR LA DIRECCIÓN (La tabla externa) ---
+                //Actualizar la direccion del cliente
                 if (clienteNuevosDatos.getDireccion() != null) {
                     Direccion direccionExistente = existente.getDireccion();
                     Direccion direccionNuevosDatos = clienteNuevosDatos.getDireccion();
-
-                    if (direccionExistente != null) {
-                        // Si ya tenía dirección, actualizamos sus campos (ajusta los getters según tu clase Direccion)
-                        direccionExistente.setCalle(direccionNuevosDatos.getCalle());
-                        direccionExistente.setColonia(direccionNuevosDatos.getColonia());
-                        direccionExistente.setDelegacion(direccionNuevosDatos.getDelegacion());
-                        direccionExistente.setCodigoPostal(direccionNuevosDatos.getCodigoPostal());
-
-                        // Guardamos los cambios de la dirección en su respectiva tabla
-                        direccionRepo.save(direccionExistente);
-                    } else {
-                        // Si por alguna razón el cliente viejo no tenía dirección, se la creamos nueva
-                        Direccion nuevaDirGuardada = direccionRepo.save(direccionNuevosDatos);
-                        existente.setDireccion(nuevaDirGuardada);
-                    }
+                    //Se actualiza los campos de la direccion
+                    direccionExistente.setCalle(direccionNuevosDatos.getCalle());
+                    direccionExistente.setColonia(direccionNuevosDatos.getColonia());
+                    direccionExistente.setDelegacion(direccionNuevosDatos.getDelegacion());
+                    direccionExistente.setCodigoPostal(direccionNuevosDatos.getCodigoPostal());
+                    //Guardamo la dirección actualizada
+                    direccionRepo.save(direccionExistente);
+                   
                 }
-
                 System.out.println("Cliente con RFC " + rfc + " actualizado correctamente.");
                 return clienteRepo.save(existente);
             } else {
