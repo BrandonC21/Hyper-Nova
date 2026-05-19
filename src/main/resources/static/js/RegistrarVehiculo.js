@@ -2,6 +2,30 @@ const API_VEHICULO = '/api/vehiculos';
 const catalogo = '/catalogo';
 const formVehiculo = document.getElementById('registrarVehiculo');
 const btnvolver = document.getElementById('btn-volver');
+
+//Cargamos el select de marcas 
+document.addEventListener('DOMContentLoaded', () => {
+    //Marcas de automoviles
+    const selectMarca = document.getElementById('marca');
+    for (const marca in marcas) {
+        const option  = document.createElement('option');
+        option.value = marca; 
+        option.textContent = marcas[marca];
+        selectMarca.appendChild(option);
+    }
+    //Evento para llenar el select de modelos dependiendo de la marca seleccionada
+    const selectModelo = document.getElementById('modelo');
+    const selectVersion = document.getElementById('version');
+    selectMarca.addEventListener('change', () => {
+        const marcaSeleccionada = selectMarca.value;
+        llenarSelectModelos(marcaSeleccionada,selectModelo, selectVersion);
+      
+    });
+   
+
+});
+
+
 btnvolver.addEventListener('click', () => {
         window.location.href = catalogo;
 });
@@ -14,11 +38,25 @@ formVehiculo.addEventListener('submit', (evento) => {
 //Agregar Vehiculos
 async function enviarVehiculo(evento) {
     const form = evento.target;
+    const marcaC = document.getElementById('marca').value;
     const clas = document.getElementById('clasificacion').value;
     const colorV = document.getElementById('color').value
+    const modeloC = document.getElementById('modelo').value;
+    const versionC = document.getElementById('version').value;
+
+    //Validamos que el empleado agregue el modelo
+    if(modeloC === "Select"){
+        alert('Seleccione el modelo del vehiculo'); 
+        return; 
+    }
+    //Validamos que el empleado agregue la marca
+    if(marcaC === "Select"){
+        alert('Seleccione la marca del vehiculo'); 
+        return; 
+    }
     //Validamos que el empleado agregue la clasificacion
     if(clas === "Selec") {
-        alert('Seleccione la clasificacion');
+        alert('Seleccione la clasificacion del vehiculo');
         return;
     }
     //Validacion de que el usuario agrege el color del vehiculo
@@ -33,8 +71,9 @@ async function enviarVehiculo(evento) {
         return;
     }
     const vehiculo = {
-        marca: document.getElementById('marca').value,
-        modelo: document.getElementById('modelo').value,
+        marca: marcaC,
+        modelo: modeloC,
+        version: versionC,
         clasificacion: clas,
         transmicion: document.getElementById('transmicion').value,
         ocupantes: parseInt(document.getElementById('ocupantes').value),

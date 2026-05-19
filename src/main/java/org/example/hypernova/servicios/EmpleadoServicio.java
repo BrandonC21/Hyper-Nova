@@ -22,7 +22,7 @@ public class EmpleadoServicio {
         Direccion direccion = direccionRepo.save(empleado.getDireccion());
         empleado.setDireccion(direccion);
         return empleadoRepo.save(empleado);
-    }
+    }    
     //Verificar si el empleado estaba registrado
     //Queda pendiente actualizar empleado
     //Validar Empleado por email y password

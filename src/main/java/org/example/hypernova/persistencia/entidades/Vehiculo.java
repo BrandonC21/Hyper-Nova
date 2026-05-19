@@ -15,6 +15,7 @@ public class Vehiculo {
     private String modelo;
     @Enumerated(EnumType.STRING)
     private ClasAutos clasificacion;
+    private String version;
     @Column(nullable = false, unique = true)
     private String placa;
     private String color;
@@ -27,13 +28,20 @@ public class Vehiculo {
     private EstadoAuto estado;
     private String transmicion;
     private int ocupantes;
-    //Vin debe ser unico
+    //Numero de serie debe ser unico
     @Column( name = "num_serie", nullable = false, unique = true)
     private String numSerie;
     //Un vehiculo pertenece a un registro de un vehiculo
     @ManyToOne
     @JoinColumn(name = "id_empleado") // Clave  foranea
     private Empleado empleado;
+
+    public String getVersion() {
+        return version;
+    }
+    public void setVersion(String version) {
+        this.version = version;
+    }
 
     public String getTransmicion() {
         return transmicion;

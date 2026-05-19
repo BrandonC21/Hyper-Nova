@@ -11,12 +11,11 @@ public class MetodoServicio {
     @Autowired
     private MetodoRepo metodoRepo;
     //Agregar metodo de pago
-    public MetodoPago agregarMetodo(MetodoPago metodo) {
+    public MetodoPago agregarMetodo(MetodoPago metodo) throws Exception {
         try {
             return metodoRepo.save(metodo);
         } catch (Exception e) {
-            System.err.println("Error al agregar el método de pago: " + e.getMessage());
-            return null;
+            throw new Exception("Error al agregar el método de pago", e);
         }
     }
 }

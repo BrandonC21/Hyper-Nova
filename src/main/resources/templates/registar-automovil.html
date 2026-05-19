@@ -15,14 +15,27 @@
         <div class="form-grid">
             <div class="form-group">
                 <label for="marca">Marca:</label>
-                <input type="text" id="marca" name="marca" required>
+                <!--<input type="text" id="marca" name="marca" required>-->
+                <select name="marca" id="marca" required>
+                    <option value="Select">-- Selecciona --</option>
+                </select>
             </div>
 
             <div class="form-group">
                 <label for="modelo">Modelo:</label>
-                <input type="text" id="modelo" name="modelo" required>
+                <!--<input type="text" id="modelo" name="modelo" required> -->
+                <select name="modelo" id="modelo" required>
+                    <option value="Select">-- Selecciona --</option>
+                </select>
             </div>
 
+            <div class="form-group">
+                <label for="version">Version:</label>
+                <select name="version" id="version" required>
+                    <option value="Select">-- Selecciona --</option>
+                </select>
+            </div>
+            
             <div class="form-group">
                 <label for="clasificacion">Clasificacion:</label>
                 <select id="clasificacion" name="clasificacion" required>
@@ -80,7 +93,7 @@
             </div>
             <div class="form-group">
                 <label for="costoDia">Costo Dia</label>
-                <input type="number" id="costoDia" name="costoDia" min="0" max="100" required>
+                <input type="number" id="costoDia" name="costoDia" min="0.01" max="10000.00" required>
             </div>
             <div class="form-group">
                 <label for="numSerie">Ingrese el VIN</label>
@@ -100,5 +113,6 @@
     </form>
 </div>
 <script src="/js/RegistrarVehiculo.js"></script>
+<script src="/js/DatosVehiculo.js"></script>
 </body>
 </html>

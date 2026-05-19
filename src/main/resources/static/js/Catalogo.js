@@ -5,6 +5,8 @@ const login = '/login';
 const btnBuscar = document.getElementById('btn-buscar');
 const filtrarFechas = '/api/contratos/disponibles'
 const btnBuscarFecha = document.getElementById('btn-buscar-fechas');
+const conoceMas = document.getElementById('conoce-mas-link');
+const acercaDe = '/conoce-mas';
 
 
     
@@ -13,6 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (miEnlace) {
         miEnlace.addEventListener('click', () => {
             window.location.href = login;
+        });
+    }
+    if(conoceMas){
+        conoceMas.addEventListener('click', () => {
+            window.location.href = acercaDe;
         });
     }
     //Busqueda por marca o modelo
@@ -68,7 +75,7 @@ async function busqueda(nombre){
           imprimirVehiculo(vehiclos);  
         }
         else if(responce.status === 404){
-            mostrarMensaje2();
+            mostrarMensaje("No se encontraron vehiculos con ese modelo o marca");
         }else{
             console.log("Error en la busqueda");
         }
@@ -86,29 +93,19 @@ async function filtrarPorFechas(fechaInicio, fechaFin){
             console.log("Vehiculos encontrados"+vehiculos);
             imprimirVehiculo(vehiculos);
         }else if(responce.status === 404){
-            mostrarMensaje2();
+            mostrarMensaje("Las fechas ingresadas no tienen vehiculos disponibles");
         }
     } catch (error) {
         console.log("Error de conexio", error);
     }
 }
-function mostrarMensaje(){
+
+function mostrarMensaje(mensaje){
     const contenedor = document.getElementById('catalogo-grid');
    contenedor.innerHTML = '';
    const tarjeta = `
    <div class="mensaje">
-        <h2>El vehiculo ingresado no existe</h2>    
-    </div>
-    `;
-    contenedor.innerHTML = tarjeta;     
-    
-}
-function mostrarMensaje2(){
-    const contenedor = document.getElementById('catalogo-grid');
-   contenedor.innerHTML = '';
-   const tarjeta = `
-   <div class="mensaje">
-        <h2>Las Fechas ingresadas no tienen vehiculos disponibles</h2>    
+        <h2>${mensaje}</h2>    
     </div>
     `;
     contenedor.innerHTML = tarjeta;     

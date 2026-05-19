@@ -44,4 +44,8 @@ public class VistasController {
     public String mostrarVisualizarContrato() {
         return "visualizar-contrato";
     }
+    @GetMapping("/conoce-mas")
+    public String mostrarConoceMas() {
+        return "conoce-mas";
+    }
 }

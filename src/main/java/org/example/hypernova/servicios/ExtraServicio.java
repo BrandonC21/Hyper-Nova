@@ -11,7 +11,11 @@ public class ExtraServicio {
     private ExtraRepo extraRepo;
 
     //Agregar extra
-    public Extra agregarExtra(Extra extra) {
-        return extraRepo.save(extra);
+    public Extra agregarExtra(Extra extra)throws Exception {
+        try {
+            return extraRepo.save(extra);
+        } catch (Exception e) {
+            throw new Exception("Error al agregar el extra", e);
+        }
     }
 }
