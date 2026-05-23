@@ -2,15 +2,16 @@
 const API_CLIENTE = '/api/clientes';
 const API_VEHICULO = '/api/vehiculos';
 const API_CONTRATO = '/api/contratos'; 
-const visualizar = 'visualizar-contrato.html'; //Visualizar el constrato
-let idVehiculoGlobal = null; // Guardamos el ID del vehiculo
+const visualizar = 'visualizar-contrato.html';
+let idVehiculoGlobal = null;
+let idClienteFinal = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('modal');
     const openModal = document.getElementById('btnAbrirModal'); 
     const closeModal = document.getElementById('closeModalBtn');
     const btnBuscar = document.getElementById('btnBuscar');
-    const formReserva = document.getElementById('form-reserva'); // Corregido al ID del HTML
+    const formReserva = document.getElementById('form-reserva');
     
     const parametrosURL = new URLSearchParams(window.location.search);
     idVehiculoGlobal = parametrosURL.get('id');
@@ -53,17 +54,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-
-// -----------------------------------------
-// FUNCIONES DE BÚSQUEDA Y LLENADO (Vehículo y Cliente)
-// -----------------------------------------
-
 async function buscarPorRFC(rfcCliente) {
     try {
         const response = await fetch(`${API_CLIENTE}/${rfcCliente}`);
         if (response.ok) {
             const cliente = await response.json();
             console.log("Datos del cliente:", cliente);
+            idClienteFinal = cliente.idCliente
+            console.log(idClienteFinal);
             llenarFormularioCliente(cliente);
             document.getElementById('modal').style.display = 'none';          
         } else if (response.status === 404) {
@@ -107,19 +105,10 @@ async function cargarDatosVehiculo(id) {
 }
 
 
-// -----------------------------------------
-// LÓGICA DE NEGOCIO: CALCULAR Y PROCESAR
-// -----------------------------------------
-
 function calcularTotales() {
     const fInicioStr = document.getElementById('fechaInicio').value;
     const fFinStr = document.getElementById('fechaFin').value;
     const seguroSelect = document.getElementById('seguro').value;
-  
-
-
-
-    // Si aún no elige fechas, no calculamos
     if(!fInicioStr || !fFinStr) return; 
 
     const fInicio = new Date(fInicioStr);
@@ -160,12 +149,11 @@ function calcularTotales() {
     document.getElementById('costoFinal').value = total.toFixed(2);
 }
 
-// Lógica principal de Reservación
 async function procesarReservacion() {
     const rfc = document.getElementById('RFC').value;
 
-    // 1. Armamos el objeto Cliente
     const datosCliente = {
+        idCliente: idClienteFinal,
         nombre: document.getElementById('nombre').value,
         apellidoP: document.getElementById('apellidoPaterno').value,
         apellidoM: document.getElementById('apellidoMaterno').value,
@@ -182,24 +170,22 @@ async function procesarReservacion() {
     };
 
     try {
-        let idClienteFinal = null;
-
-        // 2. VERIFICAMOS SI EL CLIENTE EXISTE
         const resVerificar = await fetch(`${API_CLIENTE}/${rfc}`);
         
         if (resVerificar.ok) {
-            // EL CLIENTE EXISTE -> Lo actualizamos
-            // NOTA: Asumo que en tu Controlador de SpringBoot tienes un endpoint PUT o POST para actualizar
             console.log("El cliente existe, actualizando datos...");
             const resActualizar = await fetch(`${API_CLIENTE}/actualizar`, { 
-                method: 'PUT', // o POST dependiendo de tu controlador
+                method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(datosCliente)
             });
+       if (!resActualizar.ok){
+           alert("Error al actualizar datos");
+           return;
+       }
             const clienteActualizado = await resActualizar.json();
             idClienteFinal = clienteActualizado.idCliente;
         } else {
-            // EL CLIENTE ES NUEVO -> Lo creamos
             console.log("Cliente nuevo, registrando...");
             const resCrear = await fetch(API_CLIENTE, {
                 method: 'POST',
@@ -209,12 +195,9 @@ async function procesarReservacion() {
             const clienteNuevo = await resCrear.json();
             idClienteFinal = clienteNuevo.idCliente; 
         }
-
-        // 3. ARMAMOS Y ENVIAMOS EL CONTRATO
-        // Ya tenemos el idClienteFinal, ahora creamos el contrato
         const datosContrato = {
-            cliente: { idCliente: idClienteFinal }, // Vinculamos el ID del cliente
-            vehiculo: { idVehiculo: idVehiculoGlobal }, // Vinculamos el ID del vehículo
+            cliente: { idCliente: idClienteFinal },
+            vehiculo: { idVehiculo: idVehiculoGlobal },
             fechaInicio: document.getElementById('fechaInicio').value,
             fechaFin: document.getElementById('fechaFin').value,
             seguro:{
@@ -243,9 +226,6 @@ async function procesarReservacion() {
         if (resContrato.ok) {
             const contratoGenerado = await resContrato.json();
             alert("¡Reservación confirmada exitosamente!");
-            
-            // 4. REDIRECCIÓN A LA PÁGINA DEL CONTRATO
-            // Se asume que el backend devuelve el contrato con su ID
             window.location.href = `${visualizar}?id=${contratoGenerado.idContrato}`;
         } else {
             alert("Error al generar el contrato.");

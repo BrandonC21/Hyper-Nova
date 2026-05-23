@@ -7,9 +7,6 @@ const filtrarFechas = '/api/contratos/disponibles'
 const btnBuscarFecha = document.getElementById('btn-buscar-fechas');
 const conoceMas = document.getElementById('conoce-mas-link');
 const acercaDe = '/conoce-mas';
-
-
-    
 document.addEventListener('DOMContentLoaded', () => {
     cargarCatalogo();
     if (miEnlace) {
@@ -39,7 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const fechaInicio = document.getElementById('fecha-inicio').value;
             const fechaFin = document.getElementById('fecha-fin').value;
             if(fechaInicio.trim() !== '' && fechaFin.trim() !== ''){
-                filtrarPorFechas(fechaInicio, fechaFin);
+                if(validarFecha(fechaInicio, fechaFin)) {
+                    filtrarPorFechas(fechaInicio, fechaFin);
+                }
             }else{
                 alert("Debes ingresar ambas fechas");
             }
@@ -139,4 +138,24 @@ function imprimirVehiculo(vehiculos) {
         `;
         contenedor.innerHTML += tarjeta;
     });
+}
+
+//Fuction para validar la fecha
+function validarFecha(fechaInicial, fechaFinal){
+    const fechaActual = new Date();
+    const fechaI = new Date(fechaInicial);
+    if(fechaFinal < fechaInicial){
+        alert("No puede ser menor la fecha final con que la fecha inicial");
+        console.log(fechaActual)
+        return false;
+    }
+    else{
+        if(fechaI < fechaActual) {
+            alert("No Puedes ingresar una fecha inicial menor a la actual");
+            console.log(fechaI)
+            console.log(fechaActual)
+            return false;
+        }
+    }
+    return true;
 }

@@ -15,13 +15,16 @@
             .no-imprimir { display: none !important; }
             .contenedor-recibo { box-shadow: none; border: none; margin: 0; padding: 0; }
         }
+        .header-nav nav a:hover{
+            color: #007bff;
+        }
     </style>
 </head>
 <body>
     <header class="header-nav no-imprimir">
         <div class="logo">Hyper-Nova</div>
         <nav>
-            <a href="/catalogo.html">Volver al Catálogo</a>
+            <a href="#" id="catalogo">Volver al Catálogo</a>
         </nav>
     </header>
 
@@ -39,26 +42,37 @@
                 <p><strong>RFC:</strong> <span id="cRfc"></span></p>
                 <p><strong>Licencia:</strong> <span id="cLicencia"></span></p>
                 <p><strong>Teléfono:</strong> <span id="cTelefono"></span></p>
+                <p><strong>Correo:</strong> <span id="cEmail"></span></p>
             </div>
             
             <div class="seccion-info">
                 <h3>Datos del Vehículo</h3>
-                <p><strong>Vehículo:</strong> <span id="vMarcaModelo"></span></p>
+                <p><strong>Marca:</strong> <span id="vMarcaModelo"></span></p>
+                <p><strong>Modelo:</strong> <span id="vModelo"></span></p>
+                <p><strong>Clasificacion:</strong> <span id="vClasificacion"></span></p>
+                <p><strong>Version:</strong> <span id="Version"></span></p>
+                <p><strong>Año:</strong> <span id="vAnio"></span></p>
                 <p><strong>Placa:</strong> <span id="vPlaca"></span></p>
-                <p><strong>Tipo de Seguro:</strong> <span id="vSeguro"></span> (<span id="vAseguradora"></span>)</p>
             </div>
         </div>
 
         <div class="seccion-info">
+            <h3>Datos del Seguro</h3>
+            <p><strong>Compañia:</strong> <span id="sCompania"></span></p>
+            <p><strong>Cobertura:</strong> <span id="sCobertura"></span></p>
+            <p><strong>Costo:</strong> <span id="sCostoDia"></span></p>
+        </div>
+        <br>
+        <div class="seccion-info">
             <h3>Detalles de la Renta</h3>
-            <p><strong>Fecha Recogida:</strong> <span id="rInicio"></span></p>
+            <p><strong>Fecha Entrega:</strong> <span id="rInicio"></span></p>
             <p><strong>Fecha Devolución:</strong> <span id="rFin"></span></p>
             <p><strong>Días Totales:</strong> <span id="rDias"></span></p>
             <p><strong>Método de Pago:</strong> <span id="rPago"></span></p>
         </div>
 
         <div class="totales">
-            <p><strong>Total Pagado (Inc. Depósito de $5,000.00):</strong></p>
+            <p><strong>Total Pagado (Inc. Depósito):</strong><span id="cDeposito"></span></p>
             <h2 style="color: #2c3e50; margin: 5px 0;">$<span id="totalFinal"></span> MXN</h2>
         </div>
 
@@ -67,6 +81,6 @@
         </div>
     </main>
 
-    <script src="/js/visualizar-contrato"></script>
+    <script src="/js/visualizar-contrato.js"></script>
 </body>
 </html>

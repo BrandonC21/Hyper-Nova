@@ -8,17 +8,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SeguroServicio {
+public class SeguroServicio implements SeguroService{
     @Autowired
     private SeguroRepo seguroRepo;
 
-    //Agregar Seguro del vehiculo
-    public Seguro agregarSeguro(Seguro seguro){
-        seguro.setCosto(calcularCosto(seguro));
-        return seguroRepo.save(seguro);
+    //Agregar Seguro
+    @Override
+    public Seguro agregarSeguro(Seguro seguro)throws Exception{
+        try {
+            seguro.setCosto(calcularCosto(seguro));
+            return seguroRepo.save(seguro);
+        }catch (Exception e){
+            throw new Exception("Error al agregar seguro");
+        }
     }
 
     //Calcular el costo del seguro de acuerdo al tipo
+    @Override
     public double calcularCosto(Seguro seguro) {
         if(seguro.getTipoSeguro() == TipoSeguro.COBERTURA_TERCEROS) {
             return 129.35;
@@ -31,19 +37,16 @@ public class SeguroServicio {
         }
         return 0.0;
     }
-    
-    //Actualizar el seguro
+
+    @Override
     public Seguro modificarSeguro(int id, Seguro seguroActualizado) {
         return seguroRepo.findById(id).map(seguroExistente -> {
-            // 1. Actualizamos el nombre de la aseguradora
             seguroExistente.setNombreAseguradora(seguroActualizado.getNombreAseguradora());
-            // 2. Actualizamos el tipo de seguro
             seguroExistente.setTipoSeguro(seguroActualizado.getTipoSeguro());
-            // 3. ¡IMPORTANTE! Recalculamos el costo basado en el nuevo tipo
             seguroExistente.setCosto(calcularCosto(seguroExistente));
-            // 4. Guardamos los cambios
             return seguroRepo.save(seguroExistente);
         }).orElseThrow(() -> new RuntimeException("Seguro no encontrado con ID: " + id));
     }
+
 
 }

@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conoce Mas</title>
-     <!-- <link rel="stylesheet" href="/estilos/conoce.css">-->
     <link rel="stylesheet" href="/estilos/conoce.css"> 
 
 </head>
@@ -13,8 +12,8 @@
     <div class="logo">HYPERNOVA</div>
     <div class="menu-derecho">
         <nav>
-            <a href="#">Catalogo</a>
-            <a href="#">Ubicacion</a></nav>
+            <a href="#" id="catalogo">Volver al Catálogo</a>
+            <a href="#" id="ubicacion">Ubicación</a></nav>
     </div>
 </header>
     <main>
@@ -38,22 +37,41 @@
             ciudad, en HYPERNOVA estamos aquí para ayudarte a encontrar el vehículo 
             perfecto para ti.
         </p>
-        <br>
         <p>
             Por el momonento la empresa se encuentra solo dispoible en la CDMX, pero esperamos expandirnos
             a otras ciudades en el futuro cercano. Nuestro objetivo es ser la opción número uno para
         </p>
     </div>
 </div>
-<br><br><br><br><br><br>
 <div class="contactos">
+    <div class="cLable">
         <h2>Contactanos</h2>
-        <p>Correo: <a href="mailto:capriimanuel@gmail.com">capriimanuel@gmail.com</a></p>
-        <p>Telefono: 55-455-623-55</p> 
-        <p> Facebook: <a href="https://www.facebook.com/Hypernova">https://www.facebook.com/Hypernova</a></p>
     </div>
-
-
-    <script src="/js/ConoceMas.js"></script>
+        <div class="correo">
+            <img src="/img/google.png" alt="Logo de google">
+            <p>Correo: <a href="mailto:capriimanuel@gmail.com">capriimanuel@gmail.com</a></p>
+        </div>
+        <div class="telefono">
+            <img src="/img/whatsapp%20(1).png" alt="">
+            <p>Telefono: 55-455-623-55</p>
+        </div>
+        <div class="facebook">
+            <img src="/img/facebook.png" alt="">
+            <p> Facebook: <a href="https://www.facebook.com/Hypernova">https://www.facebook.com/Hypernova</a></p>
+        </div>
+    </div>
+    <script>
+    const catalogo = '/catalogo';
+    const volverCatalogo = document.getElementById('catalogo');
+    const ubicacion = document.getElementById('ubicacion');
+    document.addEventListener('DOMContentLoaded', () => {
+    if(catalogo){
+        volverCatalogo.addEventListener('click',() => {
+            window.location.href = catalogo;
+            console.log('oprimido');
+        });
+      }
+    });
+    </script>
 </body>
 </html>

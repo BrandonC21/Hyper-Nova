@@ -1,3 +1,7 @@
+*{
+    box-sizing: border-box;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
@@ -5,12 +9,13 @@ body {
     background-color: #f4f4f4;
     display: flex;
     flex-direction: column;
-    min-height: 100vh
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
 .header-nav {
     background-color: #ffffff;
-    padding: 15px 40px;
+    padding: 15px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -18,8 +23,9 @@ body {
     position: sticky;
     top: 0;
     z-index: 10;
-    border-block-end: 2px solid #007bff;
+    border-bottom: 2px solid #007bff;
 }
+
 .logo {
     font-size: 1.5em;
     font-weight: bold;
@@ -45,22 +51,23 @@ body {
 .contenedor-padre{
     display: flex;
     align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
     gap: 30px;
     padding: 20px;
 }
+
 .banner,
-.contenedor {
-    width: 45%;
-}
 .contenedor{
-    width: 55%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: justify;
-    padding: 20px;
+    flex: 1 1 400px;
+    min-width: 0;
 }
-img {
+.banner{
+    display:flex;
+    justify-content:center;
+}
+
+.banner img {
     width: 100%;
     max-width: 450px;
     height: auto;
@@ -68,15 +75,71 @@ img {
     box-shadow: #3b73af 0px 5px 15px;
     object-fit: cover;
 }
-.contactos{
-    background-color: antiquewhite;
-    width: 100%;
-    height: 100%;
-    display: flexbox;
+.contenedor{
+    display: flex;
     flex-direction: column;
-    gap: 20px;
+    justify-content: center;
+    text-align: justify;
+    padding: 20px;
 }
+
 h1{
     text-align: center;
 }
+.contactos{
+    background-color: antiquewhite;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+}
 
+.contactos img {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+    margin-right: 10px;
+}
+
+.correo,
+.telefono,
+.facebook{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+@media (max-width: 768px){
+
+    .contenedor-padre{
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .banner,
+    .contenedor{
+        width: 100%;
+    }
+
+    .contenedor{
+        text-align: left;
+    }
+
+    .header-nav{
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .menu-derecho nav{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .header-nav nav a{
+        margin: 0;
+    }
+}

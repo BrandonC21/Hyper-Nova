@@ -1,7 +1,7 @@
 package org.example.hypernova.controladores;
 
 import org.example.hypernova.persistencia.entidades.Cliente;
-import org.example.hypernova.servicios.ClienteServicio;
+import org.example.hypernova.servicios.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/clientes")
 public class controladorClientes {
     @Autowired
-    private ClienteServicio clienteServicio;
+    private ClienteService clienteServicio;
     //Agregar Cliente
     @PostMapping
     public ResponseEntity<Cliente> crearCliente(@RequestBody Cliente cliente){
@@ -23,7 +23,7 @@ public class controladorClientes {
     //Buscar cliente por medio de rfc ya que es unico
     @GetMapping("/{rfc}")
     public ResponseEntity<Cliente> buscarcliente(@PathVariable String rfc) {
-        Cliente cliente = clienteServicio.buscarporRFC(rfc);
+        Cliente cliente = clienteServicio.buscarPorRFC(rfc);
         if( cliente != null) {
             return ResponseEntity.ok(cliente);
         }else{

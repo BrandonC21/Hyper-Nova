@@ -4,7 +4,6 @@ const formulario = 'nuevo-contrato.html';
 const miEnlace = document.getElementById('accion-link');
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Extraer el ID del vehículo desde la URL (ej. ?id=5)
     const parametrosURL = new URLSearchParams(window.location.search);
     const idVehiculo = parametrosURL.get('id');
     if(miEnlace){

@@ -118,7 +118,7 @@ legend {
     gap: 15px;
 }
 
-.btn-primario, .btn-secundario {
+.btn-primario, .btn-secundario, .btn-modal {
     padding: 12px 25px;
     border-radius: 6px;
     font-weight: bold;
@@ -135,11 +135,19 @@ legend {
 
 .btn-primario:hover { background-color: #0056b3; }
 
-.btn-secundario {
-    background-color: #e0e0e0;
-    color: #333;
+.btn-modal{
+    background-color: #28a745;
+    color: white;
+    transition: background-color 0.3s;
 }
-.btn-secundario:hover { background-color: #ccc; }
+.btn-modal:hover{
+    background-color: #1e7e34;
+}
+.btn-secundario {
+    background-color: #d23542;
+    color: white;
+}
+.btn-secundario:hover { background-color: #910708; }
 .input-bloqueado {
     background-color: #e9ecef;
     color: #495057;
@@ -157,7 +165,7 @@ legend {
     background-color: rgba(0,0,0,0.5); 
     justify-content: center;
     align-items: center;
-    z-index: 1000; 
+    z-index: 1000;
 }
 .modal-content {
     background-color: #cccccc;
@@ -166,15 +174,21 @@ legend {
     width: 80%;
     max-width: 500px;
     position: relative;
+    box-shadow: #00418e 0px 5px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 .close {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 15px;
+    right: 25px;
     cursor: pointer;
+    color: black;
 }
 .close:hover {
     transform: scale(1.2);
+    background-color: #c71829;
 }
 input[type="text"],
 select {

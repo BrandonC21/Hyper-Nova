@@ -68,11 +68,11 @@ public class ControladorContratos {
     //Obetener los vehiculos disponibles por fecha de inicio y fecha de fin
     @GetMapping("/disponibles/{fechaInicio}/{fechaFin}")
     public ResponseEntity<?> obtenerVehiculosDisponiblesPorFechas(@PathVariable LocalDate fechaInicio, @PathVariable LocalDate fechaFin) {
-        try {
-            List<Vehiculo> vehiculosDisponibles = contratoServicio.obtenerVehiculosDisponiblesPorFechas(fechaInicio, fechaFin);
+        List<Vehiculo> vehiculosDisponibles = contratoServicio.obtenerVehiculosDisponiblesPorFechas(fechaInicio, fechaFin);
+        if(vehiculosDisponibles != null && !vehiculosDisponibles.isEmpty()) {
             return ResponseEntity.ok(vehiculosDisponibles);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }else {
+            return ResponseEntity.notFound().build();
         }
     }
     @PutMapping("/{id}/finalizar")

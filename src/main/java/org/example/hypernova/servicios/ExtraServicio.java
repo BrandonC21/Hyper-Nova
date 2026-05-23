@@ -6,16 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ExtraServicio {
+public class ExtraServicio implements ExtraService {
     @Autowired
     private ExtraRepo extraRepo;
-
-    //Agregar extra
-    public Extra agregarExtra(Extra extra)throws Exception {
+    @Override
+    public Extra agregarExtra(Extra extra) throws Exception {
         try {
             return extraRepo.save(extra);
-        } catch (Exception e) {
-            throw new Exception("Error al agregar el extra", e);
+        }catch (Exception e) {
+            throw new Exception("Error al agregar el extra");
         }
     }
+
 }

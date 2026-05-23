@@ -2,6 +2,7 @@ package org.example.hypernova.controladores;
 
 import jakarta.servlet.http.HttpSession;
 import org.example.hypernova.persistencia.entidades.Empleado;
+import org.example.hypernova.servicios.EmpleadoService;
 import org.example.hypernova.servicios.EmpleadoServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,7 @@ import java.util.Map;
 @RequestMapping("/api/empleados")
 public class ControladorEmp {
     @Autowired
-    private EmpleadoServicio empleadoServicio;
+    private EmpleadoService empleadoServicio;
     //Validar Empleado
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> validarLogin(@RequestParam("email") String email, @RequestParam("password") String password,

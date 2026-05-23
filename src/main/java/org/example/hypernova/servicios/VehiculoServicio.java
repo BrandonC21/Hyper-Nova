@@ -13,26 +13,32 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class VehiculoServicio {
+public class VehiculoServicio implements VehiculoService {
     @Autowired
     VehiculoRepo vehiculoRepo;
 
-    @Autowired
-    ContratoServicio contratoServicio;
+    private final ContratoService contratoServicio;
+
+    public VehiculoServicio(ContratoService contratoServicio) {
+        this.contratoServicio = contratoServicio;
+    }
 
 
     //Agregar Vehiculo
+    @Override
     public Vehiculo agregarVehiculo(Vehiculo vehiculo){
         vehiculo.setEstado(EstadoAuto.DISPONIBLE);
         return vehiculoRepo.save(vehiculo);
     }
 
     //Obtner un lista de los vehiculos
+    @Override
     public List<Vehiculo> obtenerVehiculos(){
         return vehiculoRepo.findAll();
     }
 
     //Obtner vehiculos sin rentar y sin mantenimiento
+    @Override
     public List<Vehiculo> obtnerList(){
         //Obtner todos los vehiculos
         List<Vehiculo> vehiculos = obtenerVehiculos();
@@ -49,6 +55,7 @@ public class VehiculoServicio {
     }
 
     //Actualizar un vehiculo si se encuentra en renta
+    @Override
     public void marcarRentado(int idVehiculo){
         try {
             Vehiculo vehiculo = vehiculoRepo.findById(idVehiculo).get();
@@ -60,6 +67,7 @@ public class VehiculoServicio {
     }
 
     //Actualizar un vehiculo si se encuentra en apartado
+    @Override
     public void marcarApartado(int idVehiculo){
         try {
             Vehiculo vehiculo = vehiculoRepo.findById(idVehiculo).get();
@@ -71,6 +79,7 @@ public class VehiculoServicio {
     }
 
     //Actualizar un vehiculo si se encuentra en mantenimiento
+    @Override
     public void marcarMantenimiento(int idVehiculo){
         try {
             Vehiculo vehiculo = vehiculoRepo.findById(idVehiculo).get();
@@ -82,6 +91,7 @@ public class VehiculoServicio {
 
     }
     //Marcar disponible cuando el vehiculo cuando acabe el contrato
+    @Override
     public void marcarDisponible(int idVehiculo){
         try {
             Vehiculo vehiculo = vehiculoRepo.findById(idVehiculo).get();
@@ -92,6 +102,7 @@ public class VehiculoServicio {
         }
 
     }
+    @Override
     public Vehiculo buscarVehiculo(String numSerie) {
         Optional<Vehiculo> vehiculo = vehiculoRepo.findByNumSerie(numSerie);
         if (vehiculo.isPresent()) {
@@ -100,19 +111,21 @@ public class VehiculoServicio {
             return null;
         }
     }
+    @Override
     public Vehiculo buscarPorIdV(int idVehiculo) {
         return vehiculoRepo.findById(idVehiculo).get();
     }
-
+    @Override
     public List<Contrato> busContrato(int idVehiculo){
         return contratoServicio.obtenerContratosPorVehiculo(idVehiculo);
     }
 
     //Obtener fecha de inicio y fin
+    @Override
     public String obtenerFecha(int idVehiculo) {
         List<Contrato> contratos = busContrato(idVehiculo);
         for (Contrato contrato : contratos) {
-            if (contrato.getEstadoContrato() == EstadoContrato.EN_CURSO) {
+            if (contrato.getEstadoContrato() == EstadoContrato.RESERVADO) {
                 String fechaInicio = contrato.getFechaInicio().toString();
                 String fechaFin = contrato.getFechaFin().toString();
                 return fechaInicio + " a " + fechaFin;
@@ -122,6 +135,7 @@ public class VehiculoServicio {
     }
 
     //Elimiar vehiculo
+    @Override
    public void borrarVehiculo(int idVehiculo) throws Exception {
     Vehiculo vehiculo = buscarPorIdV(idVehiculo);
     if (vehiculo != null) {
@@ -146,11 +160,11 @@ public class VehiculoServicio {
     }
 
     //Buscar vehiculos por marca o modelo
+    @Override
     public List<Vehiculo> buscarVehiculos(String nombre){
         List<Vehiculo> vehiculosEncontrados = new ArrayList<>();
         List<Vehiculo> vehiculos = obtenerVehiculos();
         for(Vehiculo vehiculo: vehiculos){
-            //Ignoramos mayusculas y minusculas 
             if(vehiculo.getMarca().equalsIgnoreCase(nombre) || vehiculo.getModelo().equalsIgnoreCase(nombre)){
                 vehiculosEncontrados.add(vehiculo);
             }

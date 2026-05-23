@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ContratoServicio {
+public class ContratoServicio implements ContratoService {
 
     @Autowired
     private ContratoRepo contratoRepo;
@@ -26,40 +26,44 @@ public class ContratoServicio {
     @Autowired
     private VehiculoServicio vehiculoServicio;
 
-    @Autowired
-    private SeguroServicio seguroServicio;
+    private final SeguroService seguroServicio;
+    private final MetodoService metodoServicio;
+    private final ClienteService clienteServicio;
+    public ContratoServicio(ClienteService clienteServicio,
+                            MetodoService metodoServicio,
+                            SeguroService seguroServicio) {
+        this.clienteServicio = clienteServicio;
+        this.metodoServicio = metodoServicio;
+        this.seguroServicio = seguroServicio;
 
-    @Autowired
-    private MetodoServicio metodoServicio;
 
-    @Autowired
-    private ClienteServicio clienteServicio;
+    }
 
     // Crear el contrato e iniciarlo (Reservado)
+    @Override
     public Contrato crearContrato(Contrato contrato){
         try{
             //Guardar el estado del contrato como reservado
             contrato.setEstadoContrato(EstadoContrato.RESERVADO);
-            //Vicular 
+            //Vicular
             //Guardar los datos de seguro
             if (contrato.getSeguro() != null) {
                 Seguro seguroGuardado = seguroServicio.agregarSeguro(contrato.getSeguro());
                 contrato.setSeguro(seguroGuardado);
-                
+
+            }
+            //Guardar al cliente si es nuevo
+            if(clienteServicio.buscarPorId(contrato.getCliente().getIdCliente())!=null){
+                Cliente existente = clienteServicio.buscarPorId(contrato.getCliente().getIdCliente());
+                contrato.setCliente(existente);
+            }else {
+                Cliente cliente = clienteServicio.agregarCliente(contrato.getCliente());
+                contrato.setCliente(cliente);
             }
             //Guardar los datos del método de pago
             if(contrato.getMetodoPago() != null){
                 MetodoPago metodoGuardado = metodoServicio.agregarMetodo(contrato.getMetodoPago());
                 contrato.setMetodoPago(metodoGuardado);
-            }
-            //Guardar al cliente si es nuevo
-            if (contrato.getCliente() != null) {
-                Cliente existente = clienteServicio.buscarPorId(contrato.getCliente().getIdCliente());
-                contrato.setCliente(existente);
-               
-            } else{
-                 Cliente clienteGuardado = clienteServicio.agregarCliente(contrato.getCliente());
-                contrato.setCliente(clienteGuardado);
             }
 
             Vehiculo vehiculo = vehiculoServicio.buscarPorIdV(contrato.getVehiculo().getIdVehiculo());
@@ -68,26 +72,26 @@ public class ContratoServicio {
             contrato.setCostoDia(vehiculo.getCostoDia());
 
             //Vincular el id del empleado que regikstro el automovi
-            contrato.setEmpleado(vehiculo.getEmpleado()); 
-            
-            // Marcar el vehiculo como apartado, hasta que se entrege el vehiculo se marcara como rentado 
+            contrato.setEmpleado(vehiculo.getEmpleado());
+
+            // Marcar el vehiculo como apartado, hasta que se entrege el vehiculo se marcara como rentado
             //vehiculoServicio.marcarRentado(vehiculo.getIdVehiculo());
             vehiculoServicio.marcarApartado(vehiculo.getIdVehiculo());
             return contratoRepo.save(contrato);
         }catch(Exception e){
             throw new RuntimeException("Error creando contrato: " + e.getMessage());
         }
-            
-    }
-  
 
+    }
+
+    @Override
     public double calcularDeposito(Vehiculo vehiculo, long diasRenta) {
-        // El depósito es el 20% por anticipado que son 5 dias 
+        // El depósito es el 20% por anticipado que son 5 dias
         double costoEstimado = vehiculo.getCostoDia() * diasRenta; // Asumiendo una renta de 5 días para el cálculo
         return costoEstimado * 0.20; // 20% del costo estimado
 
     }
-
+    @Override
     // Finalizar el contrato y calcular el Precio Final
     public Contrato finalizarContrato(int idContrato, String observaciones, double montoExtra, String descripcionExtra) {
         try {
@@ -114,7 +118,7 @@ public class ContratoServicio {
                     costoTotal += contrato.getSeguro().getCosto();
                 }
                 //Crear un exra si la descripcion reporta anomalias o daños al vehículo
-                if (descripcionExtra.equals("Daños") || descripcionExtra.equals("Atraso")) {     
+                if (descripcionExtra.equals("Daños") || descripcionExtra.equals("Atraso")) {
                     nuevoExtra.setDescripcion(descripcionExtra);
                     nuevoExtra.setMonto(montoExtra);
                     nuevoExtra.setContrato(contrato);
@@ -155,13 +159,14 @@ public class ContratoServicio {
             return null;
         }
     }
-        
+
+    @Override
     // Cancelar un contrato en caso de que el cliente ya no requiera el servicio
     public Contrato cancelarContrato(int idContrato) throws Exception {
         try {
             // Buscar el contrato por su ID
             List<Contrato> contratos = contratoRepo.findByIdContrato(idContrato);
-            
+
             if (!contratos.isEmpty()) {
                 Contrato contrato = contratos.get(0);
                 contrato.setEstadoContrato(EstadoContrato.CANCELADO);
@@ -177,14 +182,17 @@ public class ContratoServicio {
         }
     }
 
+    @Override
     public Contrato buscarPorId(int idContrato) {
         return contratoRepo.findById(idContrato).get();
     }
 
-     public List<Contrato> obtenerContratosPorVehiculo(int idVehiculo) {
+    @Override
+    public List<Contrato> obtenerContratosPorVehiculo(int idVehiculo) {
         return contratoRepo.findByVehiculo_IdVehiculo(idVehiculo);
     }
 
+    @Override
     //Obtner el id del contrato para poder finalizrlo
     public int mostrarIdContrato(int idVehiculo) throws Exception {
         List<Contrato> contratos = obtenerContratosPorVehiculo(idVehiculo);
@@ -195,17 +203,17 @@ public class ContratoServicio {
         }
         throw new Exception("No se encontro un contrato en curso para el vehiculo con ID: " + idVehiculo);
     }
-
+    @Override
     public void eliminarContratosPorVehiculo(int idVehiculo) {
-    List<Contrato> contratos = contratoRepo.findByVehiculo_IdVehiculo(idVehiculo);
-    contratoRepo.deleteAll(contratos);
-}
-
+        List<Contrato> contratos = contratoRepo.findByVehiculo_IdVehiculo(idVehiculo);
+        contratoRepo.deleteAll(contratos);
+    }
+    @Override
     //Public obtner contratos por fecha de inicio y fecha de fin
     public List<Contrato> obtenerContratosPorFechas(LocalDate fechaInicio, LocalDate fechaFin) {
         return contratoRepo.findByFechaInicioGreaterThanEqualAndFechaFinLessThanEqual(fechaInicio, fechaFin);
     }
-
+    @Override
     //Aprartir del contato obtner los autos disponibles por fecha de inicio y fecha de fin
     public List<Vehiculo> obtenerVehiculosDisponiblesPorFechas(LocalDate fechaInicio, LocalDate fechaFin){
         //Obtner todos los vehiculos

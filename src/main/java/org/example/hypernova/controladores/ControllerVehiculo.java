@@ -3,6 +3,7 @@ package org.example.hypernova.controladores;
 import jakarta.servlet.http.HttpSession;
 import org.example.hypernova.persistencia.entidades.Empleado;
 import org.example.hypernova.persistencia.entidades.Vehiculo;
+import org.example.hypernova.servicios.VehiculoService;
 import org.example.hypernova.servicios.VehiculoServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ import java.util.Optional;
 public class ControllerVehiculo {
 
     @Autowired
-    private VehiculoServicio vehiculoServicio;
+    private VehiculoService vehiculoServicio;
 
     //Obtener todos los vehiculos
     @GetMapping

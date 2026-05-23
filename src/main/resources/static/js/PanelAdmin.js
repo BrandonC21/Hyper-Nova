@@ -184,6 +184,7 @@ async function llenarTabla(vehiculos){
             <td><span class="badge badge-renta">${vehiculo.estado}</span></td>
             <td>${fechaContrato}</td>
             <td><button class="btn-accion abrir-modal-btn" data-id="${vehiculo.idVehiculo}">Ver Detalles</button></td>
+            <td><button class="btn-accion2" data-id="${vehiculo.idVehiculo}">Entregar Auto</button></td>
            </tr>   
         `;
         table.innerHTML += tabla;
