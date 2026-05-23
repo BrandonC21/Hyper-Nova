@@ -1,5 +1,7 @@
 package org.example.hypernova.servicios;
 
+import org.example.hypernova.Extras.Folio;
+import org.example.hypernova.enmus.EstadoAuto;
 import org.example.hypernova.enmus.EstadoContrato;
 import org.example.hypernova.persistencia.entidades.Cliente;
 import org.example.hypernova.persistencia.entidades.Contrato;
@@ -68,6 +70,8 @@ public class ContratoServicio implements ContratoService {
 
             Vehiculo vehiculo = vehiculoServicio.buscarPorIdV(contrato.getVehiculo().getIdVehiculo());
             long diasRenta = ChronoUnit.DAYS.between(contrato.getFechaInicio(), contrato.getFechaFin());
+            //Anexar la cantidad de dias 
+            contrato.setDiasTotales(diasRenta);
             contrato.setDeposito(calcularDeposito(vehiculo, diasRenta));
             contrato.setCostoDia(vehiculo.getCostoDia());
 
@@ -77,6 +81,8 @@ public class ContratoServicio implements ContratoService {
             // Marcar el vehiculo como apartado, hasta que se entrege el vehiculo se marcara como rentado
             //vehiculoServicio.marcarRentado(vehiculo.getIdVehiculo());
             vehiculoServicio.marcarApartado(vehiculo.getIdVehiculo());
+            //Asignar un folio unico al contrato
+            contrato.setFolio(generarFolioUnico());
             return contratoRepo.save(contrato);
         }catch(Exception e){
             throw new RuntimeException("Error creando contrato: " + e.getMessage());
@@ -197,7 +203,7 @@ public class ContratoServicio implements ContratoService {
     public int mostrarIdContrato(int idVehiculo) throws Exception {
         List<Contrato> contratos = obtenerContratosPorVehiculo(idVehiculo);
         for (Contrato contrato : contratos) {
-            if (contrato.getEstadoContrato() == EstadoContrato.EN_CURSO) {
+            if (contrato.getEstadoContrato() == EstadoContrato.EN_CURSO || contrato.getEstadoContrato() == EstadoContrato.RESERVADO) {
                 return contrato.getIdContrato();
             }
         }
@@ -229,4 +235,21 @@ public class ContratoServicio implements ContratoService {
         return vehiculos;
     }
 
+    @Override
+    public String generarFolioUnico() {
+        String folio;
+        do {
+            folio = Folio.generarFolio();
+        } while (contratoRepo.existsByFolio(folio));
+        return folio;
+    }
+
+    @Override
+    public Contrato entrega(int idContrato) {
+       Contrato actualizarContrato = buscarPorId(idContrato);
+       vehiculoServicio.marcarRentado(actualizarContrato.getVehiculo().getIdVehiculo());
+       actualizarContrato.setEstadoContrato(EstadoContrato.EN_CURSO);
+       return contratoRepo.save(actualizarContrato);
+    }
+    
 }

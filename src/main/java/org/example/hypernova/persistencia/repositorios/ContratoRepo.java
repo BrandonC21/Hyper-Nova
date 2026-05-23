@@ -11,5 +11,7 @@ public interface ContratoRepo  extends JpaRepository<Contrato,Integer> {
      // Buscasr autos con contratos por fecha de inicio y fecha de fin
      List<Contrato> findByFechaInicioGreaterThanEqualAndFechaFinLessThanEqual(LocalDate fechaInicio, LocalDate fechaFin);
      List<Contrato> findByIdContrato(int idContrato);
+     //Validar que el folio sea unico
+     boolean existsByFolio(String folio);
 
 }

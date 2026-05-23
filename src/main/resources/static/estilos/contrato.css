@@ -15,8 +15,17 @@ body {
     border-block-end: 2px solid #007bff;
 }
 
-.logo { font-size: 1.5em; font-weight: bold; color: #333; }
-.header-nav nav a { text-decoration: none; color: #555; margin: 0 15px; font-weight: 500; }
+.logo {
+     font-size: 1.5em; 
+     font-weight: bold; 
+     color: #333; 
+}
+.header-nav nav a { 
+    text-decoration: none; 
+    color: #555; 
+    margin: 0 15px; 
+    font-weight: 500; 
+}
 
 
 .contenedor-formulario {

@@ -22,9 +22,4 @@ public interface VehiculoService {
     List<Vehiculo> buscarVehiculos(String nombre);
 
 
-
-
-
-
-
 }

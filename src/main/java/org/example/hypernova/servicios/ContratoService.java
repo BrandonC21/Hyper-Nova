@@ -17,9 +17,7 @@ public interface ContratoService {
     void eliminarContratosPorVehiculo(int idVehiculo);
     List<Contrato> obtenerContratosPorFechas(LocalDate fechaInicio, LocalDate fechaFin);
     List<Vehiculo> obtenerVehiculosDisponiblesPorFechas(LocalDate fechaInicio, LocalDate fechaFin);
-
-
-
-
-
+    String generarFolioUnico();
+    Contrato entrega(int idContrato);
+   
 }

@@ -16,6 +16,10 @@ public class Contrato {
     @Column(name = "id_contrato") //
     private int idContrato;
 
+    //Agregar un foliio para el contrato
+    @Column(unique = true, nullable = false, length = 5)
+    private String folio;
+
     @Column(name = "fecha_inicio")
     private LocalDate fechaInicio;
 
@@ -30,6 +34,9 @@ public class Contrato {
 
     @Column(name = "deposito")
     private double deposito;
+
+    @Column(name = "dias_totales")
+    private Long diasTotales;
 
     @Column(name = "observaciones")
     private String observaciones;
@@ -176,5 +183,19 @@ public class Contrato {
 
     public void setExtras(List<Extra> extras) {
         this.extras = extras;
+    }
+
+    public Long getDiasTotales() {
+        return diasTotales;
+    }
+
+    public void setDiasTotales(Long diasTotales) {
+        this.diasTotales = diasTotales;
+    }
+    public String getFolio() {
+        return folio;
+    }
+    public void setFolio(String folio) {
+        this.folio = folio;
     }
 }

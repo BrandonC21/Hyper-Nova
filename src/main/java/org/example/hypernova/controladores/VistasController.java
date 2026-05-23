@@ -48,4 +48,8 @@ public class VistasController {
     public String mostrarConoceMas() {
         return "conoce-mas";
     }
+    @GetMapping("/reserva")
+    public String recerva(){
+        return "reserva";
+    }
 }

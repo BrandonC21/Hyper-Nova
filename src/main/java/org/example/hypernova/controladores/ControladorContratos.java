@@ -89,5 +89,16 @@ public class ControladorContratos {
             return ResponseEntity.badRequest().body("Error al finalizar: " + ex.getMessage());
         }
     }
+
+    @PutMapping("{id}/actualizar")
+    public ResponseEntity<?> entregarVehiculo(@PathVariable int id){
+        try {
+            contratoServicio.entrega(id);
+            return ResponseEntity.ok("Actualizacion correcta");
+        } catch (Exception e) {
+            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al entregar el vehículo.");
+        }
+    }
     
 }

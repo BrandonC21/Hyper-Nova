@@ -31,11 +31,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     //Abrir el modal
     if(tablaContenedor){
-        tablaContenedor.addEventListener('click', (evento) => {
+        tablaContenedor.addEventListener('click', async (evento) => {
             if(evento.target.classList.contains('abrir-modal-btn')){
                 modal.style.display = 'flex';
                 idVehiculoSeleccionado = evento.target.getAttribute('data-id');
                 console.log("Vehículo seleccionado:", idVehiculoSeleccionado);
+            }
+            //Entrega del auto
+            if(evento.target.classList.contains('btn-accion2')){
+                idVehiculoSeleccionado = evento.target.getAttribute('data-id');
+                console.log(idVehiculoSeleccionado)
+                const idContrato = await contratoID(idVehiculoSeleccionado);
+                await entregarVehiculo(idContrato);
             }
         });
     }
@@ -209,6 +216,24 @@ async function marcarComoMantenimiento(idVehiculo) {
     } catch (error) {
         console.error("Error en la petición:", error);
         alert("Error de conexión al servidor.");
+    }
+}
+
+//Entrega de vehiculo
+async function entregarVehiculo(idContrato) {
+    try{
+        const url = `${API_CONTRATO}/${idContrato}/actualizar`;
+        const responce = await fetch(url, {
+            method: 'PUT'
+        });
+        if(responce.ok){
+            alert("Vehiculo entregado Existosamente")
+            detalleVehiculo();
+        }else{
+            alert("Error al actualizar la entrega")
+        }
+    }catch{
+        alert("Error en la promesa")
     }
 }
 

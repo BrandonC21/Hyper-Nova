@@ -66,6 +66,8 @@ public class VehiculoServicio implements VehiculoService {
         }
     }
 
+    //Actualizar elestado 
+
     //Actualizar un vehiculo si se encuentra en apartado
     @Override
     public void marcarApartado(int idVehiculo){
@@ -171,5 +173,7 @@ public class VehiculoServicio implements VehiculoService {
         } 
         return vehiculosEncontrados;
     }
+
+    //Busqueda personalizada 
 
 }

@@ -200,6 +200,7 @@ async function procesarReservacion() {
             vehiculo: { idVehiculo: idVehiculoGlobal },
             fechaInicio: document.getElementById('fechaInicio').value,
             fechaFin: document.getElementById('fechaFin').value,
+            //diasTotales: parseInt(document.getElementById('diasTotales').textContent),
             seguro:{
                 nombreAseguradora: document.getElementById('nombreAseguradora').value,
                 tipoSeguro: document.getElementById('seguro').value,

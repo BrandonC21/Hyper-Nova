@@ -38,7 +38,7 @@ public class ControllerVehiculo {
     //Obtener todos los vehiculos disponibles
     @GetMapping("/disponibles")
     public ResponseEntity<List<Vehiculo>> obtenerVehiculosDisponibles(){
-        return ResponseEntity.ok(vehiculoServicio.obtnerList());
+        return ResponseEntity.ok(vehiculoServicio.obtenerVehiculos());
     }
 
     //Buscar vehiculos por marca o medelo

@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const response = await fetch(`${API_CONTRATO}/${idContrato}`);
                 if (response.ok) {
                     const contrato = await response.json();
-                    document.getElementById('folioContrato').textContent = "HN-" + contrato.idContrato.toString().padStart(6, '0');
+                    document.getElementById('folioContrato').textContent = contrato.folio;
                     document.getElementById('fechaEmision').textContent = formatoLocal;
 
                     //Datos de cliente
