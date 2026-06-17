@@ -1,5 +1,6 @@
 package org.example.hypernova.persistencia.entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity

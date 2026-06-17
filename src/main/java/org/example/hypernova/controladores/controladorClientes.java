@@ -3,6 +3,7 @@ package org.example.hypernova.controladores;
 import org.example.hypernova.persistencia.entidades.Cliente;
 import org.example.hypernova.servicios.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,16 @@ public class controladorClientes {
             return ResponseEntity.ok(cliente);
         }else{
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/obtener/{rfc}")
+    public ResponseEntity<?> buscarFolio(@PathVariable String rfc) {
+        try {
+            String folio = clienteServicio.obtenerFolioContrato(rfc);
+            return ResponseEntity.ok(folio);
+        } catch (RuntimeException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }
     }
 

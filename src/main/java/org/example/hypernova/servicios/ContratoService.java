@@ -19,5 +19,6 @@ public interface ContratoService {
     List<Vehiculo> obtenerVehiculosDisponiblesPorFechas(LocalDate fechaInicio, LocalDate fechaFin);
     String generarFolioUnico();
     Contrato entrega(int idContrato);
-   
+    Contrato obtnerContrato(String folio);
+    Contrato obtenerUltimoContratoActivo(int idCliente);
 }

@@ -51,6 +51,20 @@ public class ControladorContratos {
         }
     }
 
+    @GetMapping("/folio/{folio}")
+    public ResponseEntity<Contrato> obtenerContratoPorFolio(@PathVariable String folio) {
+        try{
+            Contrato contrato = contratoServicio.obtnerContrato(folio);
+            if (contrato != null) {
+                return ResponseEntity.ok(contrato);
+            }else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
     //Obtener id para finalizar contrato
     @GetMapping("/vehiculo/{idVehiculo}/activo")
     public ResponseEntity<?> obtenerIdContrato(@PathVariable int idVehiculo) {
@@ -98,6 +112,15 @@ public class ControladorContratos {
         } catch (Exception e) {
             return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error al entregar el vehículo.");
+        }
+    }
+    @PutMapping("/cancelar/{idContrato}")
+    public ResponseEntity<?> cancelarContrato(@PathVariable int idContrato) {
+        try {
+            Contrato contratoCancelado = contratoServicio.cancelarContrato(idContrato);
+            return ResponseEntity.ok(contratoCancelado);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
     

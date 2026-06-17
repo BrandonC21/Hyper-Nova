@@ -7,45 +7,70 @@
     <link rel="stylesheet" href="/estilos/reserva.css">
 </head>
 <body>
-    <header class="header-nav">
-        <div class="logo">HYPERNOVA</div>
-    </header>
-    <main class="contenedor-principal">    
+<header class="header-nav">
+    <div class="logo">HYPERNOVA</div>
+    <nav>
+        <a href="#" id="v-catalogo">Volver al Catálogo</a>
+    </nav>
+</header>
+<main class="contenedor-principal">
     <div class="reserva">
         <h2>Ver, modificar, Cancelar</h2>
-        <p>Para modificar o cancelar una reservación próxima, 
-            ingrese el nombre, el apellido  y el folio de reservación.
+        <p>Para modificar o cancelar una reservación próxima,
+            ingrese el folio, en caso de no recordarlo ingrese el rfc y correo
         </p>
-        <form id="buscar-reserva">
-          <div class="form-grid">
-            <div class="form-group">
-                <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre"required>
-           </div>
-           <div class="form-group">
-                <label for="RFC">RFC</label>
-                <input type="text" id="RFC" name="RFC" required pattern="[A-Za-z0-9Ñ&]{11,}" placeholder="ABCD010101XYZ" maxlength="13">
-           </div>
-           <div class="form-group">
-                <label for="folio">Folio</label>
-                <input type="text" id="folio" name="folio" required maxlength="5">
-           </div>
-           <div class="form-group">
-                <label for="email">Correo</label>
-                <input type="email" id="email" name="email" placeholder="correo@ejemplo.com" required>
-           </div>
-           <div class="button-group">
-                <button type="submit" id="btn-registar" class="btn">Buscar Reserva</button>
-                <button type="button" id="btn-recuperar" class="btn">Recuperar Folio</button>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="RFC">RFC</label>
+                    <input type="text" id="RFC" name="RFC" required pattern="[A-Za-z0-9Ñ&]{11,}" placeholder="ABCD010101XYZ" maxlength="13">
+                </div>
+                <div class="form-group">
+                    <label for="folio">Folio</label>
+                    <input type="text" id="folio" name="folio" required maxlength="5">
+                </div>
+                <div class="button-group">
+                    <button type="button" id="btn-buscar" class="btn">Buscar Reserva</button>
+                    <button type="button" id="btn-recuperar" class="btn">Recuperar Folio</button>
+                </div>
             </div>
-          </div>
-        </form>
-       </div>
+    </div>
     <div class="informacion" id="informacion">
         <div class="datos-vehiculo" id="datos">
+            <section class="estado2">
+                <h2>Estado de Reserva</h2>
+                <p><strong>Estado:</strong> <span id="estado"></span></p>
+            </section>
+            <section class="visualizacion">
+                <img id="detalle-imagen" src="" alt="Foto del Vehículo" style="display: none;">
+                <p id="detalle-mensaje-img">Cargando imagen...</p>
+            </section>
+            <section class="detalle-vehiculo">
+                <h2>Datos vehiculo</h2>
+                <p><strong>Marca:</strong> <span id="vMarca"></span></p>
+                <p><strong>Modelo:</strong> <span id="vModelo"></span></p>
+                <p><strong>Clasificacion:</strong> <span id="vClasificacion"></span></p>
+                <p><strong>Version:</strong> <span id="Version"></span></p>
+                <p><strong>Año:</strong> <span id="vAnio"></span></p>
+                <p><strong>Placa:</strong> <span id="vPlaca"></span></p>
+            </section>
 
+            <section class="detalle-contrato">
+                <p><strong>Fecha de Entrega:</strong>  <span id="fecha-inicio"></span></p>
+                <p><strong>Fecha de Finalizacion:</strong>  <span id="fecha-final"></span></p>
+            </section>
+            <section class="detalle-costo">
+                <p><strong>Cobertura de Seguro:</strong> <span id="sCobertura"></span> </p>
+                <p><strong>Costo por dia:</strong> $ <span id="sCosto"></span></p>
+                <p><strong>Precio del vehiculo por dia:</strong> $ <span id="vPrecio"></span></p>
+                <p><strong>Total</strong> $ <span id="cTotal"></span></p>
+            </section>
+            <div class="button-group">
+                <button type="submit" id="btn-modificar" class="btn">Modificar Reserva</button>
+                <button type="button" id="btn-cancelar" class="btn">Cancelar Reserva</button>
+            </div>
         </div>
     </div>
-    </main>
+</main>
+<script src="/js/reserva.js"></script>
 </body>
 </html>

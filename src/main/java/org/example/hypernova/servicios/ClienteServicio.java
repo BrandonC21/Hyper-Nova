@@ -1,6 +1,8 @@
 package org.example.hypernova.servicios;
 
+import org.example.hypernova.Extras.EnviarMensaje;
 import org.example.hypernova.persistencia.entidades.Cliente;
+import org.example.hypernova.persistencia.entidades.Contrato;
 import org.example.hypernova.persistencia.entidades.Direccion;
 import org.example.hypernova.persistencia.repositorios.ClienteRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,9 @@ public class ClienteServicio implements ClienteService {
     @Autowired
     private ClienteRepo clienteRepo;
     private final DireccionService direccionService;
+    @Autowired
+    private ContratoServicio contratoServicio;
+
     public ClienteServicio(DireccionService direccionService) {
         this.direccionService = direccionService;
     }
@@ -49,5 +54,17 @@ public class ClienteServicio implements ClienteService {
       cliente.setDireccion(actualizada);
       return clienteRepo.save(cliente);
     }
+    @Override
+    public String obtenerFolioContrato(String rfc) {
+        Cliente cliente = buscarPorRFC(rfc);
+        Contrato contrato = contratoServicio
+                .obtenerUltimoContratoActivo(cliente.getIdCliente());
+        EnviarMensaje mensaje = new EnviarMensaje();
+        mensaje.enviarCorreo(cliente.getEmail(),"Recuperacion de folio", contrato.getFolio());
+        return contrato.getFolio();
+    }
+
+
+
 
 }

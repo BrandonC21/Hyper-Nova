@@ -169,28 +169,35 @@ public class ContratoServicio implements ContratoService {
     @Override
     // Cancelar un contrato en caso de que el cliente ya no requiera el servicio
     public Contrato cancelarContrato(int idContrato) throws Exception {
-        try {
-            // Buscar el contrato por su ID
-            List<Contrato> contratos = contratoRepo.findByIdContrato(idContrato);
-
-            if (!contratos.isEmpty()) {
-                Contrato contrato = contratos.get(0);
+        Contrato contrato = buscarPorId(idContrato);
+        if(contrato != null) {
+            //Validamos el estado del contrato que solo pueda ser cancelado en estado reservado
+            if (contrato.getEstadoContrato() == EstadoContrato.RESERVADO) {
                 contrato.setEstadoContrato(EstadoContrato.CANCELADO);
-                if (contrato.getVehiculo() != null) {
-                    vehiculoServicio.marcarDisponible(contrato.getVehiculo().getIdVehiculo());
-                }
-                return contratoRepo.save(contrato);
-            } else {
-                throw new Exception("No se encontró el contrato con ID: " + idContrato);
+                //Marcar el vehiculo como disponible
+                vehiculoServicio.marcarDisponible(contrato.getVehiculo().getIdVehiculo());
+                contrato.setCostoFinal(contrato.getDeposito());
+                //Agregar el extra
+                List<Extra> extras = new ArrayList<>();
+                Extra nuevoExtra = new Extra();
+                nuevoExtra.setContrato(contrato);
+                nuevoExtra.setMonto(contrato.getDeposito());
+                nuevoExtra.setDescripcion("Multa por cancelacion");
+                extras.add(nuevoExtra);
+                //Agregar la descripcion al contrato
+                contrato.setObservaciones("Cliente cancelo el contrato");
+                contrato.setExtras(extras);
             }
-        } catch (Exception e) {
-            throw new Exception("Error al cancelar el contrato: " + e.getMessage());
+        }else {
+            return null;
         }
+        return contratoRepo.save(contrato);
+
     }
 
     @Override
     public Contrato buscarPorId(int idContrato) {
-        return contratoRepo.findById(idContrato).get();
+        return contratoRepo.findById(idContrato).orElse(null);
     }
 
     @Override
@@ -251,5 +258,33 @@ public class ContratoServicio implements ContratoService {
        actualizarContrato.setEstadoContrato(EstadoContrato.EN_CURSO);
        return contratoRepo.save(actualizarContrato);
     }
-    
+
+    @Override
+    public Contrato obtnerContrato(String folio) {
+       List<Contrato> getContratos = contratoRepo.findAll();
+       for (Contrato c : getContratos){
+           if (c.getFolio().equals(folio)){
+               return c;
+           }
+       }return null;
+    }
+
+
+    @Override
+    public Contrato obtenerUltimoContratoActivo(int idCliente) {
+
+        List<EstadoContrato> estadosValidos = List.of(
+                EstadoContrato.RESERVADO,
+                EstadoContrato.EN_CURSO
+        );
+
+        return contratoRepo
+                .findTopByCliente_IdClienteAndEstadoContratoInOrderByFechaInicioDesc(
+                        idCliente,
+                        estadosValidos
+                )
+                .orElseThrow(() ->
+                        new RuntimeException("No se encontro un contrato valido"));
+    }
+
 }
