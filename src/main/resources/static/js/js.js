@@ -65,7 +65,7 @@ async function buscarPorRFC(rfcCliente) {
             llenarFormularioCliente(cliente);
             document.getElementById('modal').style.display = 'none';          
         } else if (response.status === 404) {
-            alert("El RFC no existe, por favor llena tus datos para registrarte.");
+            alert("No se encuentra un registri con el rfc");
         }
     } catch (error) {
         console.log("Error de conexión:", error);

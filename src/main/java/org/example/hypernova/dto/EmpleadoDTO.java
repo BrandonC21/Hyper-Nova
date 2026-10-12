@@ -1,12 +1,8 @@
 package org.example.hypernova.dto;
 
-import org.example.hypernova.enmus.RolesEmp;
+import org.example.hypernova.enums.RolesEmp;
 
 public class EmpleadoDTO {
-    private String nombre;
-    private String apellidoP;
-    private String apellidoM;
-    private String celular;
     private String email;
     private String password;
     private RolesEmp rolesEmp;
@@ -14,38 +10,6 @@ public class EmpleadoDTO {
     public EmpleadoDTO(String email, String password) {
         this.email = email;
         this.password = password;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellidoP() {
-        return apellidoP;
-    }
-
-    public void setApellidoP(String apellidoP) {
-        this.apellidoP = apellidoP;
-    }
-
-    public String getApellidoM() {
-        return apellidoM;
-    }
-
-    public void setApellidoM(String apellidoM) {
-        this.apellidoM = apellidoM;
-    }
-
-    public String getCelular() {
-        return celular;
-    }
-
-    public void setCelular(String celular) {
-        this.celular = celular;
     }
 
     public String getEmail() {

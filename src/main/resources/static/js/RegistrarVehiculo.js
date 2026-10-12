@@ -103,8 +103,7 @@ async function enviarVehiculo(evento) {
             alert('Vehiculo Registrado Con exito');
             evento.target.reset();
         } else {
-            const errorMsg = await res.text();
-            alert('Error al registrar el vehiculo: ' + errorMsg);
+            alert('Error al registrar el vehiculo: ');
         }
     } catch (error) {
         console.error("Error:", error);
